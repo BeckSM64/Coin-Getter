@@ -9,17 +9,21 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MainMenuScreen implements Screen {
 
     private Game game;
+    private SpriteBatch batch;
     private Camera cam;
     private Stage stage;
     private Table table;
@@ -28,10 +32,12 @@ public class MainMenuScreen implements Screen {
     private Label gameTitle;
     private Random rng;
     private Music music;
+    private List<Coin> coinArray;
 
     public MainMenuScreen(Game game) {
 
         this.game = game;
+        batch = new SpriteBatch();
         cam = new OrthographicCamera();
         ((OrthographicCamera) cam).setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -61,12 +67,19 @@ public class MainMenuScreen implements Screen {
         music = Gdx.audio.newMusic(Gdx.files.internal("audio/renaissance_endo.mp3"));
         music.setLooping(true);
         music.play();
+
+        //Create random number of coins in an array with random positions and velocities. May have to use iterator
+        coinArray = new ArrayList<Coin>();
+        for(int i = 0; i < rng.nextInt(20); i++)
+            coinArray.add(new Coin(rng.nextInt(Gdx.graphics.getWidth() - (int) Coin.WIDTH),
+                    rng.nextInt(Gdx.graphics.getHeight() - (int ) Coin.HEIGHT),
+                    (int) ((rng.nextInt(5) + 1) * Gdx.graphics.getDensity()),
+                    (int) ((rng.nextInt(5) + 1) * Gdx.graphics.getDensity())));
     }
 
     private Color changeTitleColor() {
 
-        Color color = new Color(rng.nextFloat(), rng.nextFloat(), rng.nextFloat(), 1);
-        return color;
+        return new Color(rng.nextFloat(), rng.nextFloat(), rng.nextFloat(), 1);
     }
 
     @Override
@@ -84,8 +97,17 @@ public class MainMenuScreen implements Screen {
 
         cam.update();
         stage.draw();
+        gameTitle.setStyle(new Label.LabelStyle(font, changeTitleColor()));//Change color of menu title every frame
 
-        gameTitle.setStyle(new Label.LabelStyle(font, changeTitleColor()));
+        //Update all the coins in the coin array
+        for(Coin coin : coinArray)
+            coin.update();
+
+        //Draw all the coins in the coin array
+        batch.begin();
+        for(Coin coin : coinArray)
+            batch.draw(coin.getCoinImage(), coin.getPosition().x, coin.getPosition().y, Coin.WIDTH, Coin.HEIGHT);
+        batch.end();
     }
 
     @Override
@@ -113,5 +135,8 @@ public class MainMenuScreen implements Screen {
         font.dispose();
         skin.dispose();
         stage.dispose();
+        batch.dispose();
+        for(Coin coin : coinArray)
+            coin.dispose();
     }
 }

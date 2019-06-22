@@ -61,4 +61,8 @@ public class Coin {
     public void setVelocity(int velX, int velY) {
         this.velocity = new Vector3(velX, velY, 0);
     }
+
+    public void dispose() {
+        coinImage.dispose();
+    }
 }
