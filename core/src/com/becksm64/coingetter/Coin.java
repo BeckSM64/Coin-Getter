@@ -38,6 +38,10 @@ public class Coin {
         }
     }
 
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
     private void setBounds(float x, float y) {
         bounds.setPosition(x, y);
     }

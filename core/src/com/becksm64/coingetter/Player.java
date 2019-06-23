@@ -2,6 +2,7 @@ package com.becksm64.coingetter;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 public class Player {
@@ -10,11 +11,17 @@ public class Player {
 
     private Texture playerImage;
     private Vector3 position;
+    private Rectangle bounds;
 
     public Player(float x, float y) {
 
         playerImage = new Texture("sprites/player.png");
         position = new Vector3(x, y, 0);
+        bounds = new Rectangle(x, y, SIZE, SIZE);
+    }
+
+    public void update() {
+        setBounds(position.x, position.y);
     }
 
     public Vector3 getPosition() {
@@ -27,6 +34,14 @@ public class Player {
 
     public Texture getPlayerImage() {
         return playerImage;
+    }
+
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
+    private void setBounds(float x, float y) {
+        bounds.setPosition(x, y);
     }
 
     public void dispose() {

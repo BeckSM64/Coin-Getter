@@ -59,8 +59,9 @@ public class GameScreen implements Screen {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //Update camera and coins
+        //Update camera, player, and coins
         cam.update();
+        player.update();
         for(Coin coin : coinArray)
             coin.update();
 
@@ -70,14 +71,34 @@ public class GameScreen implements Screen {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(touchPos);//Gets correct touch position relative to camera
             player.setPosition(touchPos.x, touchPos.y);
+            player.update();
         }
 
         //Draw assets
         batch.begin();
         batch.draw(player.getPlayerImage(), player.getPosition().x, player.getPosition().y, Player.SIZE, Player.SIZE);//Draw player
-        for(Coin coin : coinArray)
-            batch.draw(coin.getCoinImage(), coin.getPosition().x, coin.getPosition().y, Coin.WIDTH, Coin.HEIGHT);
+        //Draw coins if they exist or create more if they don't
+        if(coinArray.size() > 0) {
+            for (Coin coin : coinArray)
+                batch.draw(coin.getCoinImage(), coin.getPosition().x, coin.getPosition().y, Coin.WIDTH, Coin.HEIGHT);
+        } else {
+            generateCoins();
+        }
         batch.end();
+
+        collision();//Check for collision
+    }
+
+    /*
+     * Check for collision between game objects
+     */
+    private void collision() {
+
+        for(int i = 0; i < coinArray.size(); i++) {
+            if(player.getBounds().overlaps(coinArray.get(i).getBounds())) {
+                coinArray.remove(i);//Remove coin from list if player touches it
+            }
+        }
     }
 
     @Override
@@ -104,5 +125,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         player.dispose();
         batch.dispose();
+        for(Coin coin : coinArray)
+            coin.dispose();
     }
 }
