@@ -21,6 +21,7 @@ public class GameScreen implements Screen {
     private Player player;
     private List<Coin> coinArray;
     private Random rng;
+    private Hud hud;
 
     public GameScreen(Game game) {
 
@@ -32,6 +33,7 @@ public class GameScreen implements Screen {
         player = new Player(touchPos.x, touchPos.y);
         rng = new Random();
         coinArray = new ArrayList<Coin>();
+        hud = new Hud(batch);
         generateCoins();
     }
 
@@ -73,6 +75,10 @@ public class GameScreen implements Screen {
             player.setPosition(touchPos.x, touchPos.y);
             player.update();
         }
+
+        //Draw HUD
+        batch.setProjectionMatrix(hud.getStage().getCamera().combined);
+        hud.getStage().draw();
 
         //Draw assets
         batch.begin();
