@@ -12,12 +12,14 @@ public class Player {
     private Texture playerImage;
     private Vector3 position;
     private Rectangle bounds;
+    private int coinsCollected;
 
     public Player(float x, float y) {
 
         playerImage = new Texture("sprites/player.png");
         position = new Vector3(x, y, 0);
         bounds = new Rectangle(x, y, SIZE, SIZE);
+        coinsCollected = 0;//Starts at 0 because player starts with no coins
     }
 
     public void update() {
@@ -42,6 +44,14 @@ public class Player {
 
     private void setBounds(float x, float y) {
         bounds.setPosition(x, y);
+    }
+
+    public int getCoinsCollected() {
+        return coinsCollected;
+    }
+
+    public void setCoinsCollected(int coinsCollected) {
+        this.coinsCollected = coinsCollected;
     }
 
     public void dispose() {

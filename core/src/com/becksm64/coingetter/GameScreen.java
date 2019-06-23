@@ -93,6 +93,7 @@ public class GameScreen implements Screen {
         batch.end();
 
         collision();//Check for collision
+        hud.setCoinLabel(player.getCoinsCollected());//Update the hud to reflect player coins collected
     }
 
     /*
@@ -103,6 +104,7 @@ public class GameScreen implements Screen {
         for(int i = 0; i < coinArray.size(); i++) {
             if(player.getBounds().overlaps(coinArray.get(i).getBounds())) {
                 coinArray.remove(i);//Remove coin from list if player touches it
+                player.setCoinsCollected(player.getCoinsCollected() + 1);//Increment coins collected when coin is collected
             }
         }
     }
@@ -133,5 +135,6 @@ public class GameScreen implements Screen {
         batch.dispose();
         for(Coin coin : coinArray)
             coin.dispose();
+        hud.dispose();
     }
 }

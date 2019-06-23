@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -18,6 +19,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class Hud {
 
     private Stage stage;
+    private Label health;
+    private Label coinLabel;
 
     public Hud(SpriteBatch batch) {
 
@@ -36,16 +39,34 @@ public class Hud {
         table.setFillParent(true);
 
         Skin skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
-        Label healthLabel = new Label("HEALTH", skin);
+
+        Label healthLabel = new Label("HEALTH: ", skin);
         healthLabel.setStyle(new Label.LabelStyle(font, Color.WHITE));
-        table.add(healthLabel).expandX().align(Align.left);//Have row take up full width of stage and align left
-        //table.add(new Image(new Texture("sprites/coin.png"), , 1));
+
+        health = new Label("100", skin);
+        health.setStyle(new Label.LabelStyle(font, Color.WHITE));
+
+        coinLabel = new Label(": 0", skin);
+        coinLabel.setStyle(new Label.LabelStyle(font, Color.WHITE));
+
+        table.add(healthLabel).align(Align.left);//Have row take up full width of stage and align left
+        table.add(health).align(Align.left);
+        table.add(new Image(new Texture("sprites/coin.png"))).width(Gdx.graphics.getWidth() / 10.0f).height(Gdx.graphics.getHeight() / 6.0f);
+        table.add(coinLabel);
 
         stage.addActor(table);
     }
 
     public Stage getStage() {
         return this.stage;
+    }
+
+    public void setHealth(int health) {
+        this.health.setText(health);
+    }
+
+    public void setCoinLabel(int coinCount) {
+        this.coinLabel.setText(":" + coinCount);
     }
 
     public void dispose() {
