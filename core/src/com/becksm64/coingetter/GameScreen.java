@@ -37,6 +37,8 @@ public class GameScreen implements Screen {
         rng = new Random();
         coinArray = new ArrayList<Coin>();
         enemyArray = new ArrayList<Enemy>();
+        enemyArray.add(new Enemy(rng.nextInt(Gdx.graphics.getWidth() - (int) Enemy.SIZE),
+                        rng.nextInt(Gdx.graphics.getHeight() - (int) Enemy.SIZE)));//Add initial enemy
         hud = new Hud(batch);
         generateCoins();
         addEnemy();
@@ -62,8 +64,8 @@ public class GameScreen implements Screen {
     private void addEnemy() {
 
         timeSeconds += Gdx.graphics.getRawDeltaTime();//Wait specified amount of time until opponent takes their turn
-        if (timeSeconds > 10f) {
-            timeSeconds -= 10f;//Reset time passed
+        if (timeSeconds > 20f) {
+            timeSeconds -= 20f;//Reset time passed
             enemyArray.add(new Enemy(rng.nextInt(Gdx.graphics.getWidth() - (int) Enemy.SIZE),
                     rng.nextInt(Gdx.graphics.getHeight() - (int) Enemy.SIZE)));
         }
