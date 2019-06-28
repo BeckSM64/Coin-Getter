@@ -32,9 +32,17 @@ public class Enemy {
 
     private void constrainEnemy() {
 
-        if(position.x > Gdx.graphics.getWidth() - SIZE || position.x < 0) {
+        if(position.x > Gdx.graphics.getWidth() - SIZE) {
+            position.x = Gdx.graphics.getWidth() - SIZE - 1;
             velocity.x *= -1;
-        } else if(position.y > Gdx.graphics.getHeight() - SIZE || position.y < 0) {
+        } else if(position.x < 0) {
+            position.x = 1;
+            velocity.x *= -1;
+        } else if(position.y > Gdx.graphics.getHeight() - SIZE) {
+            position.y = Gdx.graphics.getHeight() - SIZE - 1;
+            velocity.y *= -1;
+        } else if(position.y < 0){
+            position.y = 1;
             velocity.y *= -1;
         }
     }
