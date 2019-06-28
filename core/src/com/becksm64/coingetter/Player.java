@@ -29,8 +29,25 @@ public class Player {
         health = 100;
     }
 
+    /*
+     * Keep player within the screen bounds
+     */
+    private void constrainPlayer() {
+
+        if(position.x >= Gdx.graphics.getWidth() - SIZE)
+            position.x = Gdx.graphics.getWidth() - SIZE;
+        else if(position.x <= 0)
+            position.x = 0;
+
+        if(position.y >= Gdx.graphics.getHeight() - SIZE)
+            position.y = Gdx.graphics.getHeight() - SIZE;
+        else if(position.y <= 0)
+            position.y = 0;
+    }
+
     public void update() {
         setBounds(position.x, position.y);
+        constrainPlayer();
     }
 
     public Vector3 getPosition() {
