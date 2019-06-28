@@ -141,6 +141,12 @@ public class GameScreen implements Screen {
             for (Coin coin : coinArray)
                 batch.draw(coin.getCoinImage(), coin.getPosition().x, coin.getPosition().y, Coin.WIDTH, Coin.HEIGHT);
         } else {
+
+            //Add 10 to player health whenever they collect all the coins on the screen, only if they have less than 100 health
+            if(!player.hasFullHealth()) {
+                player.setHealth(player.getHealth() + 10);
+                hud.setHealth(player.getHealth());
+            }
             generateCoins();
         }
 
