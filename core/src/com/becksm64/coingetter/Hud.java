@@ -6,13 +6,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -40,19 +38,23 @@ public class Hud {
 
         Skin skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
 
-        Label healthLabel = new Label("HEALTH: ", skin);
+        Label healthLabel = new Label("HEALTH:", skin);
         healthLabel.setStyle(new Label.LabelStyle(font, Color.WHITE));
 
         health = new Label("100", skin);
         health.setStyle(new Label.LabelStyle(font, Color.WHITE));
+        //float healthWidth = health.getWidth();
 
         coinLabel = new Label(": 0", skin);
         coinLabel.setStyle(new Label.LabelStyle(font, Color.WHITE));
 
-        table.add(healthLabel).align(Align.left);//Have row take up full width of stage and align left
-        table.add(health).align(Align.left);
+        table.left();
+        table.add(healthLabel).padLeft(padding).padRight(padding);//Have row take up full width of stage and align left
+        table.add(health);
         table.add(new Image(new Texture("sprites/coin.png"))).width(Gdx.graphics.getWidth() / 10.0f).height(Gdx.graphics.getHeight() / 6.0f);
         table.add(coinLabel);
+        float healthWidth = table.getCell(health).getMinWidth();//Get width of health when label is three digits long
+        table.getCell(health).width(healthWidth);//Force cell to stay the width of three digit long label regardless of label size
 
         stage.addActor(table);
     }
