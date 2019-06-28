@@ -29,10 +29,11 @@ public class GameOverScreen implements Screen {
     private BitmapFont font, font2;
     private Skin skin;
     private Label gameOver;
+    private Label finalScore;
     private TextButton newBtn;
     private Random rng;
 
-    public GameOverScreen(Game game) {
+    public GameOverScreen(Game game, int score) {
 
         this.game = game;
         batch = new SpriteBatch();
@@ -59,6 +60,8 @@ public class GameOverScreen implements Screen {
         skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
         gameOver = new Label("[GAME OVER]", skin);
         gameOver.setStyle(new Label.LabelStyle(font, Color.WHITE));
+        finalScore = new Label("SCORE: " + String.valueOf(score), skin);
+        finalScore.setStyle(new Label.LabelStyle(font2, Color.WHITE));
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = font2;
         newBtn = new TextButton("NEW GAME", buttonStyle);
@@ -66,9 +69,10 @@ public class GameOverScreen implements Screen {
         //Add texts and buttons to the table
         table.add(gameOver);
         table.row();//Next row
+        table.add(finalScore).padTop(10 * Gdx.graphics.getDensity());
+        table.row();
         table.add(newBtn).padTop(10 * Gdx.graphics.getDensity());
 
-        //Create and start background music
         rng = new Random();
     }
 

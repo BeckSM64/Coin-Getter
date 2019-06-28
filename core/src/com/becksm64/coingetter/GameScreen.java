@@ -77,6 +77,14 @@ public class GameScreen implements Screen {
         return player.getHealth() <= 0;
     }
 
+    /*
+     * Increases the player score every frame and updates the hud to reflect this
+     */
+    private void increaseScore() {
+        player.setScore(player.getScore() + 1);
+        hud.setScore(player.getScore());
+    }
+
     @Override
     public void show() {
 
@@ -143,11 +151,12 @@ public class GameScreen implements Screen {
 
         collision();//Check for collision
         hud.setCoinLabel(player.getCoinsCollected());//Update the hud to reflect player coins collected
+        increaseScore();
 
         //Check if game is over
         if(isGameOver()) {
             this.dispose();
-            game.setScreen(new GameOverScreen(game));//Set game over screen
+            game.setScreen(new GameOverScreen(game, player.getScore()));//Set game over screen
         }
     }
 
@@ -162,6 +171,7 @@ public class GameScreen implements Screen {
                 coinArray.get(i).dispose();//Dispose of asset before removing from array
                 coinArray.remove(i);//Remove coin from list if player touches it
                 player.setCoinsCollected(player.getCoinsCollected() + 1);//Increment coins collected when coin is collected
+                player.setScore(player.getScore() + 50);//Increment player score by 50 for every coin collected
             }
         }
 

@@ -14,19 +14,19 @@ public class Player {
 
     private Texture playerImage;
     private Vector3 position;
-    private Vector3 velocity;
     private Rectangle bounds;
     private int coinsCollected;
     private int health;
+    private int score;
 
     public Player(float x, float y) {
 
         playerImage = new Texture("sprites/player.png");
         position = new Vector3(x, y, 0);
-        velocity = new Vector3(5 * Gdx.graphics.getDensity(), 5 * Gdx.graphics.getDensity(), 0);
         bounds = new Rectangle(x, y, SIZE, SIZE);
         coinsCollected = 0;//Starts at 0 because player starts with no coins
         health = 100;
+        score = 0;
     }
 
     /*
@@ -86,12 +86,12 @@ public class Player {
         this.health = health;
     }
 
-    public Vector3 getVelocity() {
-        return velocity;
+    public int getScore() {
+        return score;
     }
 
-    public void setVelocity(int velX, int velY) {
-        this.velocity = new Vector3(velX, velY, 0);
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public void dispose() {

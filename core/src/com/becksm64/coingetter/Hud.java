@@ -19,6 +19,7 @@ public class Hud {
     private Stage stage;
     private Label health;
     private Label coinLabel;
+    private Label score;
 
     public Hud(SpriteBatch batch) {
 
@@ -41,20 +42,31 @@ public class Hud {
         Label healthLabel = new Label("HEALTH:", skin);
         healthLabel.setStyle(new Label.LabelStyle(font, Color.WHITE));
 
+        Label scoreLabel = new Label("SCORE:", skin);
+        scoreLabel.setStyle(new Label.LabelStyle(font, Color.WHITE));
+
         health = new Label("100", skin);
         health.setStyle(new Label.LabelStyle(font, Color.WHITE));
-        //float healthWidth = health.getWidth();
 
         coinLabel = new Label(": 0", skin);
         coinLabel.setStyle(new Label.LabelStyle(font, Color.WHITE));
 
+        score = new Label("0", skin);
+        score.setStyle(new Label.LabelStyle(font, Color.WHITE));
+
         table.left();
-        table.add(healthLabel).padLeft(padding).padRight(padding);//Have row take up full width of stage and align left
+        table.add(healthLabel).padLeft(padding).padRight(padding);
         table.add(health);
         table.add(new Image(new Texture("sprites/coin.png"))).width(Gdx.graphics.getWidth() / 10.0f).height(Gdx.graphics.getHeight() / 6.0f);
         table.add(coinLabel);
+        table.add(scoreLabel).padLeft(padding).padRight(padding);
+        table.add(score);
+        //table.debug();
+
         float healthWidth = table.getCell(health).getMinWidth();//Get width of health when label is three digits long
         table.getCell(health).width(healthWidth);//Force cell to stay the width of three digit long label regardless of label size
+        float coinLabelWidth = table.getCell(coinLabel).getMinWidth() * 2;//Calculate size for cell
+        table.getCell(coinLabel).width(coinLabelWidth);//Set fixed cell size
 
         stage.addActor(table);
     }
@@ -69,6 +81,10 @@ public class Hud {
 
     public void setCoinLabel(int coinCount) {
         this.coinLabel.setText(":" + coinCount);
+    }
+
+    public void setScore(int score) {
+        this.score.setText(score);
     }
 
     public void dispose() {
