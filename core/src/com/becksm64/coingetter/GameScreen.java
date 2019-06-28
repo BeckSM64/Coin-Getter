@@ -50,6 +50,14 @@ public class GameScreen implements Screen {
                     (int) ((rng.nextInt(5)) * Gdx.graphics.getDensity()) + 1));
     }
 
+    /*
+     * Checks to see if player health has reached 0
+     * Returns true if it has, returns false otherwise
+     */
+    private boolean isGameOver() {
+        return player.getHealth() <= 0;
+    }
+
     @Override
     public void show() {
 
@@ -85,7 +93,6 @@ public class GameScreen implements Screen {
                 player.setPosition(player.getPosition().x, player.getPosition().y - player.getVelocity().y);
             else if(player.getPosition().y < touchPos.y)
                 player.setPosition(player.getPosition().x, player.getPosition().y + player.getVelocity().y);
-            //player.setPosition(touchPos.x, touchPos.y);
             player.update();
         }
 
@@ -109,6 +116,12 @@ public class GameScreen implements Screen {
 
         collision();//Check for collision
         hud.setCoinLabel(player.getCoinsCollected());//Update the hud to reflect player coins collected
+
+        //Check if game is over
+        if(isGameOver()) {
+            this.dispose();
+            game.setScreen(new GameOverScreen(game));//Set game over screen
+        }
     }
 
     /*
