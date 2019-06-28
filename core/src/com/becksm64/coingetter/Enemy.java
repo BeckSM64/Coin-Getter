@@ -59,7 +59,7 @@ public class Enemy {
         return velocity;
     }
 
-    public void setVelocity(int velX, int velY) {
+    public void setVelocity(float velX, float velY) {
         this.velocity = new Vector3(velX, velY, 0);
     }
 

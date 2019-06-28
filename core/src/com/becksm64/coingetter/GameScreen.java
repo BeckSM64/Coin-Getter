@@ -20,6 +20,7 @@ public class GameScreen implements Screen {
     private Vector3 touchPos;//Vector to keep track of where screen was touched
     private Player player;
     private List<Coin> coinArray;
+    private Enemy testEnemy;
     private Random rng;
     private Hud hud;
 
@@ -31,6 +32,7 @@ public class GameScreen implements Screen {
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         touchPos = new Vector3(Gdx.graphics.getWidth() / 2.0f, Gdx.graphics.getHeight() / 2.0f, 0);//Start relatively in center of screen
         player = new Player(touchPos.x, touchPos.y);
+        testEnemy = new Enemy(50, 50);
         rng = new Random();
         coinArray = new ArrayList<Coin>();
         hud = new Hud(batch);
@@ -64,6 +66,7 @@ public class GameScreen implements Screen {
         //Update camera, player, and coins
         cam.update();
         player.update();
+        testEnemy.update();
         for(Coin coin : coinArray)
             coin.update();
 
@@ -72,7 +75,17 @@ public class GameScreen implements Screen {
 
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(touchPos);//Gets correct touch position relative to camera
-            player.setPosition(touchPos.x, touchPos.y);
+
+            //Update player position relative to touch position
+            if(player.getPosition().x > touchPos.x)
+                player.setPosition(player.getPosition().x - player.getVelocity().x, player.getPosition().y);
+            else if(player.getPosition().x < touchPos.x)
+                player.setPosition(player.getPosition().x + player.getVelocity().x, player.getPosition().y);
+            if(player.getPosition().y > touchPos.y)
+                player.setPosition(player.getPosition().x, player.getPosition().y - player.getVelocity().y);
+            else if(player.getPosition().y < touchPos.y)
+                player.setPosition(player.getPosition().x, player.getPosition().y + player.getVelocity().y);
+            //player.setPosition(touchPos.x, touchPos.y);
             player.update();
         }
 
@@ -83,6 +96,8 @@ public class GameScreen implements Screen {
         //Draw assets
         batch.begin();
         batch.draw(player.getPlayerImage(), player.getPosition().x, player.getPosition().y, Player.SIZE, Player.SIZE);//Draw player
+        batch.draw(testEnemy.getEnemyImage(), testEnemy.getPosition().x, testEnemy.getPosition().y, Enemy.SIZE, Enemy.SIZE);//Draw player
+
         //Draw coins if they exist or create more if they don't
         if(coinArray.size() > 0) {
             for (Coin coin : coinArray)
@@ -101,11 +116,22 @@ public class GameScreen implements Screen {
      */
     private void collision() {
 
+        //Check for player and coin collision
         for(int i = 0; i < coinArray.size(); i++) {
             if(player.getBounds().overlaps(coinArray.get(i).getBounds())) {
+                coinArray.get(i).dispose();//Dispose of asset before removing from array
                 coinArray.remove(i);//Remove coin from list if player touches it
                 player.setCoinsCollected(player.getCoinsCollected() + 1);//Increment coins collected when coin is collected
             }
+        }
+
+        //Check for player and enemy collision
+        if(player.getBounds().overlaps(testEnemy.getBounds())) {
+
+            player.setPosition(Gdx.graphics.getWidth() / 2.0f - Player.SIZE, Gdx.graphics.getHeight() / 2.0f - Player.SIZE);
+            player.setHealth(player.getHealth() - 10);//Decrease health by 10 if hit by enemy
+            hud.setHealth(player.getHealth());//Update hud to reflect current player health
+            testEnemy.setVelocity(testEnemy.getVelocity().x * -1, testEnemy.getVelocity().y * -1);
         }
     }
 
