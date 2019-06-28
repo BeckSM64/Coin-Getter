@@ -3,11 +3,14 @@ package com.becksm64.coingetter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class Player {
 
     public static final float SIZE = Gdx.graphics.getWidth() / 15.0f;//Will be used for width and height because player is a square
+    public static final float SPEED = 400f * Gdx.graphics.getDensity();//Speed calculated based on screen size
+    public static final Vector2 tmp = new Vector2();//Vector to represent distance between player position and current touch position
 
     private Texture playerImage;
     private Vector3 position;

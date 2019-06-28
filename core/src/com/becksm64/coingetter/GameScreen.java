@@ -20,9 +20,11 @@ public class GameScreen implements Screen {
     private Vector3 touchPos;//Vector to keep track of where screen was touched
     private Player player;
     private List<Coin> coinArray;
-    private Enemy testEnemy;
+    private List<Enemy> enemyArray;
     private Random rng;
     private Hud hud;
+
+    private float timeSeconds;
 
     public GameScreen(Game game) {
 
@@ -32,11 +34,14 @@ public class GameScreen implements Screen {
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         touchPos = new Vector3(Gdx.graphics.getWidth() / 2.0f, Gdx.graphics.getHeight() / 2.0f, 0);//Start relatively in center of screen
         player = new Player(touchPos.x, touchPos.y);
-        testEnemy = new Enemy(50, 50);
         rng = new Random();
         coinArray = new ArrayList<Coin>();
+        enemyArray = new ArrayList<Enemy>();
         hud = new Hud(batch);
         generateCoins();
+        addEnemy();
+
+        timeSeconds = 0;
     }
 
     /*
@@ -48,6 +53,20 @@ public class GameScreen implements Screen {
                     rng.nextInt(Gdx.graphics.getHeight() - (int) Coin.HEIGHT),
                     (int) ((rng.nextInt(5)) * Gdx.graphics.getDensity()) + 1,
                     (int) ((rng.nextInt(5)) * Gdx.graphics.getDensity()) + 1));
+    }
+
+    /*
+     * Adds an enemy to the enemy array with a randomly generated position on the screen
+     * Only adds a new enemy if 10 seconds has passed
+     */
+    private void addEnemy() {
+
+        timeSeconds += Gdx.graphics.getRawDeltaTime();//Wait specified amount of time until opponent takes their turn
+        if (timeSeconds > 10f) {
+            timeSeconds -= 10f;//Reset time passed
+            enemyArray.add(new Enemy(rng.nextInt(Gdx.graphics.getWidth() - (int) Enemy.SIZE),
+                    rng.nextInt(Gdx.graphics.getHeight() - (int) Enemy.SIZE)));
+        }
     }
 
     /*
@@ -74,9 +93,12 @@ public class GameScreen implements Screen {
         //Update camera, player, and coins
         cam.update();
         player.update();
-        testEnemy.update();
         for(Coin coin : coinArray)
             coin.update();
+        for(Enemy enemy : enemyArray)
+            enemy.update();
+
+        addEnemy();
 
         //Update touched position
         if(Gdx.input.isTouched()) {
@@ -84,16 +106,18 @@ public class GameScreen implements Screen {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(touchPos);//Gets correct touch position relative to camera
 
-            //Update player position relative to touch position
-            if(player.getPosition().x > touchPos.x)
-                player.setPosition(player.getPosition().x - player.getVelocity().x, player.getPosition().y);
-            else if(player.getPosition().x < touchPos.x)
-                player.setPosition(player.getPosition().x + player.getVelocity().x, player.getPosition().y);
-            if(player.getPosition().y > touchPos.y)
-                player.setPosition(player.getPosition().x, player.getPosition().y - player.getVelocity().y);
-            else if(player.getPosition().y < touchPos.y)
-                player.setPosition(player.getPosition().x, player.getPosition().y + player.getVelocity().y);
-            player.update();
+            float maxDistance = Player.SPEED * Gdx.graphics.getDeltaTime();//Distance the player can move during current frame
+            Player.tmp.set(touchPos.x, touchPos.y).sub(player.getPosition().x, player.getPosition().y);//A vector from the player to the touch point
+
+            //Close enough to just set the player at the target but if not, move along vector towards touch position
+            if (Player.tmp.len() <= maxDistance) {
+                player.getPosition().x = touchPos.x;
+                player.getPosition().y = touchPos.y;
+            } else {
+                Player.tmp.nor().scl(maxDistance); //Reduce the length of the vector by the distance player just traveled
+                player.getPosition().x += Player.tmp.x;//Move player by the vector length
+                player.getPosition().y += Player.tmp.y;
+            }
         }
 
         //Draw HUD
@@ -103,7 +127,6 @@ public class GameScreen implements Screen {
         //Draw assets
         batch.begin();
         batch.draw(player.getPlayerImage(), player.getPosition().x, player.getPosition().y, Player.SIZE, Player.SIZE);//Draw player
-        batch.draw(testEnemy.getEnemyImage(), testEnemy.getPosition().x, testEnemy.getPosition().y, Enemy.SIZE, Enemy.SIZE);//Draw player
 
         //Draw coins if they exist or create more if they don't
         if(coinArray.size() > 0) {
@@ -112,6 +135,10 @@ public class GameScreen implements Screen {
         } else {
             generateCoins();
         }
+
+        //Draw enemies
+        for(Enemy enemy : enemyArray)
+            batch.draw(enemy.getEnemyImage(), enemy.getPosition().x, enemy.getPosition().y, Enemy.SIZE, Enemy.SIZE);//Draw enemy
         batch.end();
 
         collision();//Check for collision
@@ -139,12 +166,14 @@ public class GameScreen implements Screen {
         }
 
         //Check for player and enemy collision
-        if(player.getBounds().overlaps(testEnemy.getBounds())) {
+        for(Enemy enemy : enemyArray) {
+            if (player.getBounds().overlaps(enemy.getBounds())) {
 
-            player.setPosition(Gdx.graphics.getWidth() / 2.0f - Player.SIZE, Gdx.graphics.getHeight() / 2.0f - Player.SIZE);
-            player.setHealth(player.getHealth() - 10);//Decrease health by 10 if hit by enemy
-            hud.setHealth(player.getHealth());//Update hud to reflect current player health
-            testEnemy.setVelocity(testEnemy.getVelocity().x * -1, testEnemy.getVelocity().y * -1);
+                player.setPosition(Gdx.graphics.getWidth() / 2.0f - (Player.SIZE / 2), Gdx.graphics.getHeight() / 2.0f - (Player.SIZE / 2));
+                player.setHealth(player.getHealth() - 10);//Decrease health by 10 if hit by enemy
+                hud.setHealth(player.getHealth());//Update hud to reflect current player health
+                enemy.setVelocity(enemy.getVelocity().x * -1, enemy.getVelocity().y * -1);
+            }
         }
     }
 
