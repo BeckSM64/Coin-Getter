@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -20,6 +21,7 @@ public class Hud {
     private Label health;
     private Label coinLabel;
     private Label score;
+    private TextButton storeBtn;
 
     public Hud(SpriteBatch batch) {
 
@@ -33,6 +35,7 @@ public class Hud {
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage(viewport, batch);
+        //Gdx.input.setInputProcessor(stage);//Take input for stage
         Table table = new Table();
         table.top();
         table.setFillParent(true);
@@ -54,19 +57,25 @@ public class Hud {
         score = new Label("0", skin);
         score.setStyle(new Label.LabelStyle(font, Color.WHITE));
 
+        TextButton.TextButtonStyle btnStyle= new TextButton.TextButtonStyle();
+        btnStyle.font = font;
+        storeBtn = new TextButton("STORE", btnStyle);
+
         table.left();
-        table.add(healthLabel).padLeft(padding).padRight(padding);
-        table.add(health);
-        table.add(new Image(new Texture("sprites/coin.png"))).width(Gdx.graphics.getWidth() / 10.0f).height(Gdx.graphics.getHeight() / 6.0f);
-        table.add(coinLabel);
-        table.add(scoreLabel).padLeft(padding).padRight(padding);
-        table.add(score);
+        table.add(healthLabel).padLeft(padding).padRight(padding).right();
+        table.add(health).left();
+        table.add(new Image(new Texture("sprites/coin.png"))).width(Gdx.graphics.getWidth() / 10.0f).height(Gdx.graphics.getHeight() / 6.0f).right();
+        table.add(coinLabel).left();
+        table.add(scoreLabel).padLeft(padding).padRight(padding).left();
+        table.add(score).left();
+        table.row().expandY().expandX().colspan(7);
+        table.add(storeBtn).right().bottom().pad(padding);
         //table.debug();
 
-        float healthWidth = table.getCell(health).getMinWidth();//Get width of health when label is three digits long
+        /*float healthWidth = table.getCell(health).getMinWidth();//Get width of health when label is three digits long
         table.getCell(health).width(healthWidth);//Force cell to stay the width of three digit long label regardless of label size
         float coinLabelWidth = table.getCell(coinLabel).getMinWidth() * 2;//Calculate size for cell
-        table.getCell(coinLabel).width(coinLabelWidth);//Set fixed cell size
+        table.getCell(coinLabel).width(coinLabelWidth);//Set fixed cell size*/
 
         stage.addActor(table);
     }
@@ -85,6 +94,10 @@ public class Hud {
 
     public void setScore(int score) {
         this.score.setText(score);
+    }
+
+    public TextButton getStoreBtn() {
+        return storeBtn;
     }
 
     public void dispose() {

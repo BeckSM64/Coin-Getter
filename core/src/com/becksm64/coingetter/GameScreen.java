@@ -2,11 +2,14 @@ package com.becksm64.coingetter;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +26,10 @@ public class GameScreen implements Screen {
     private List<Enemy> enemyArray;
     private Random rng;
     private Hud hud;
+    private Store store;
 
     private float timeSeconds;
+    private boolean showStore;
 
     public GameScreen(Game game) {
 
@@ -40,10 +45,20 @@ public class GameScreen implements Screen {
         enemyArray.add(new Enemy(rng.nextInt(Gdx.graphics.getWidth() - (int) Enemy.SIZE),
                         rng.nextInt(Gdx.graphics.getHeight() - (int) Enemy.SIZE)));//Add initial enemy
         hud = new Hud(batch);
+        store = new Store(batch);
+
+        //Setup input for multiple stages
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        Gdx.input.setInputProcessor(multiplexer);
+        multiplexer.addProcessor(hud.getStage());
+        multiplexer.addProcessor(store.getStage());
+
+        //Generate initial coins and enemy
         generateCoins();
         addEnemy();
 
-        timeSeconds = 0;
+        timeSeconds = 0;//Keeps track of time passed for events that require specific time lapse
+        showStore = false;
     }
 
     /*
@@ -87,30 +102,11 @@ public class GameScreen implements Screen {
         hud.setScore(player.getScore());
     }
 
-    @Override
-    public void show() {
+    /*
+     * Moves player towards touch position. May move this into player class
+     */
+    private void movePlayer() {
 
-    }
-
-    @Override
-    public void render(float delta) {
-
-        //Clear screen with specified color
-        Gdx.gl.glClearColor(0.008f, 0.15f, 0.38f, 1);
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        //Update camera, player, and coins
-        cam.update();
-        player.update();
-        for(Coin coin : coinArray)
-            coin.update();
-        for(Enemy enemy : enemyArray)
-            enemy.update();
-
-        addEnemy();
-
-        //Update touched position
         if(Gdx.input.isTouched()) {
 
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -129,10 +125,38 @@ public class GameScreen implements Screen {
                 player.getPosition().y += Player.tmp.y;
             }
         }
+    }
 
-        //Draw HUD
-        batch.setProjectionMatrix(hud.getStage().getCamera().combined);
-        hud.getStage().draw();
+    @Override
+    public void show() {
+
+        //Store button to purchase remove enemy power up which removes one enemy from the screen on purchase
+        store.getRemoveEnemyBtn().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                //Player must have at least 30 coins and there must be at least one enemy on screen to purchase this power up
+                if(player.getCoinsCollected() >= 30 && enemyArray.size() > 0) {
+                    player.setCoinsCollected(player.getCoinsCollected() - 30);//Reduce player coin count
+                    hud.setCoinLabel(player.getCoinsCollected());//Update hud
+                    enemyArray.remove(0);//Remove the first enemy in the array list
+                }
+            }
+        });
+
+        //Open store button
+        hud.getStoreBtn().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                showStore = !showStore;
+            }
+        });
+    }
+
+    /*
+     * Draw all the assets that need to be drawn for the game
+     */
+    private void drawAssets() {
 
         //Draw assets
         batch.begin();
@@ -156,10 +180,41 @@ public class GameScreen implements Screen {
         for(Enemy enemy : enemyArray)
             batch.draw(enemy.getEnemyImage(), enemy.getPosition().x, enemy.getPosition().y, Enemy.SIZE, Enemy.SIZE);//Draw enemy
         batch.end();
+    }
 
-        collision();//Check for collision
-        hud.setCoinLabel(player.getCoinsCollected());//Update the hud to reflect player coins collected
-        increaseScore();
+    @Override
+    public void render(float delta) {
+
+        //Clear screen with specified color
+        Gdx.gl.glClearColor(0.008f, 0.15f, 0.38f, 1);
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        //Update camera, player, and coins
+        if(!showStore) {
+            cam.update();
+            player.update();
+            for (Coin coin : coinArray)
+                coin.update();
+            for (Enemy enemy : enemyArray)
+                enemy.update();
+            addEnemy();
+            movePlayer();
+            increaseScore();
+            collision();//Check for collision
+            hud.setCoinLabel(player.getCoinsCollected());//Update the hud to reflect player coins collected
+            drawAssets();//Draw player, coins, and enemies
+        }
+
+        //Draw HUD
+        batch.setProjectionMatrix(hud.getStage().getCamera().combined);
+        hud.getStage().draw();
+
+        //Draw Store
+        if(showStore) {
+            batch.setProjectionMatrix(store.getStage().getCamera().combined);
+            store.getStage().draw();
+        }
 
         //Check if game is over
         if(isGameOver()) {
@@ -222,5 +277,6 @@ public class GameScreen implements Screen {
         for(Coin coin : coinArray)
             coin.dispose();
         hud.dispose();
+        store.dispose();
     }
 }
