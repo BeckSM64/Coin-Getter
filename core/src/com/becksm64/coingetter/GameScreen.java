@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -160,7 +161,14 @@ public class GameScreen implements Screen {
 
         //Draw assets
         batch.begin();
+
+        //Set transparency if player is invincible
+        Color c = batch.getColor();
+        if(player.isInvincible())
+            batch.setColor(c.r, c.g, c.b, 0.5f);
+
         batch.draw(player.getPlayerImage(), player.getPosition().x, player.getPosition().y, Player.SIZE, Player.SIZE);//Draw player
+        batch.setColor(c.r, c.g, c.b, 1);//Go back to no transparency
 
         //Draw coins if they exist or create more if they don't
         if(coinArray.size() > 0) {
@@ -240,12 +248,21 @@ public class GameScreen implements Screen {
 
         //Check for player and enemy collision
         for(Enemy enemy : enemyArray) {
-            if (player.getBounds().overlaps(enemy.getBounds())) {
+            if (player.getBounds().overlaps(enemy.getBounds()) && !player.isInvincible()) {
 
-                player.setPosition(Gdx.graphics.getWidth() / 2.0f - (Player.SIZE / 2), Gdx.graphics.getHeight() / 2.0f - (Player.SIZE / 2));
                 player.setHealth(player.getHealth() - 10);//Decrease health by 10 if hit by enemy
                 hud.setHealth(player.getHealth());//Update hud to reflect current player health
                 enemy.setVelocity(enemy.getVelocity().x * -1, enemy.getVelocity().y * -1);
+                player.setInvincible(true);
+            }
+        }
+
+        //Check if player invincibility is up
+        if(player.isInvincible()) {
+            player.setInvincibleTime(player.getInvincibleTime() + Gdx.graphics.getRawDeltaTime());//Increment invincible time
+            if (player.getInvincibleTime() > 2f && player.isInvincible()) {
+                player.setInvincibleTime(0);//Reset invincible time
+                player.setInvincible(false);//No longer invincible after 2 seconds
             }
         }
     }

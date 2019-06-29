@@ -18,6 +18,8 @@ public class Player {
     private int coinsCollected;
     private int health;
     private int score;
+    private boolean isInvincible;
+    private float invincibleTime;
 
     public Player(float x, float y) {
 
@@ -27,6 +29,8 @@ public class Player {
         coinsCollected = 0;//Starts at 0 because player starts with no coins
         health = 100;
         score = 0;
+        isInvincible = false;
+        invincibleTime = 0f;//Player is invincible for 2 seconds after hit
     }
 
     /*
@@ -96,6 +100,22 @@ public class Player {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public boolean isInvincible() {
+        return isInvincible;
+    }
+
+    public void setInvincible(boolean invincible) {
+        isInvincible = invincible;
+    }
+
+    public float getInvincibleTime() {
+        return invincibleTime;
+    }
+
+    public void setInvincibleTime(float invincibleTime) {
+        this.invincibleTime = invincibleTime;
     }
 
     public void dispose() {
