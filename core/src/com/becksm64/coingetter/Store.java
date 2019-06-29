@@ -21,6 +21,7 @@ public class Store {
 
     private Stage stage;
     private ImageButton removeEnemyBtn;
+    private ImageButton runningShoesBtn;
 
     public Store(SpriteBatch batch) {
 
@@ -49,11 +50,17 @@ public class Store {
         TextureRegion enemyRegion = new TextureRegion(enemyTexture);
         Drawable enemyDrawable = new TextureRegionDrawable(enemyRegion);
         removeEnemyBtn = new ImageButton(enemyDrawable);
+        Texture shoesTexture = new Texture(Gdx.files.internal("sprites/runningShoesBtn.png"));//Test image, replace with actual store button image when finished
+        TextureRegion shoesRegion = new TextureRegion(shoesTexture);
+        Drawable shoesDrawable = new TextureRegionDrawable(shoesRegion);
+        runningShoesBtn = new ImageButton(shoesDrawable);
 
         //Add actors to table
         table.add(storeTitle);
         table.row();
         table.add(removeEnemyBtn).size(removeEnemyBtn.getWidth() * Gdx.graphics.getDensity(), removeEnemyBtn.getHeight() / 2 * Gdx.graphics.getDensity());
+        table.row();
+        table.add(runningShoesBtn).size(runningShoesBtn.getWidth() * Gdx.graphics.getDensity(), runningShoesBtn.getHeight() / 2 * Gdx.graphics.getDensity());
 
         stage.addActor(table);//Add table to stage
     }
@@ -66,8 +73,8 @@ public class Store {
         return removeEnemyBtn;
     }
 
-    public void setRemoveEnemyBtn(ImageButton removeEnemyBtn) {
-        this.removeEnemyBtn = removeEnemyBtn;
+    public ImageButton getRunningShoesBtn() {
+        return runningShoesBtn;
     }
 
     public void dispose() {

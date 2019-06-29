@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Vector3;
 public class Player {
 
     public static final float SIZE = Gdx.graphics.getWidth() / 15.0f;//Will be used for width and height because player is a square
-    public static final float SPEED = 400f * Gdx.graphics.getDensity();//Speed calculated based on screen size
     public static final Vector2 tmp = new Vector2();//Vector to represent distance between player position and current touch position
 
     private Texture playerImage;
@@ -18,8 +17,10 @@ public class Player {
     private int coinsCollected;
     private int health;
     private int score;
+    private float speed;
     private boolean isInvincible;
     private float invincibleTime;
+    private boolean hasRunningShoes;
 
     public Player(float x, float y) {
 
@@ -29,8 +30,10 @@ public class Player {
         coinsCollected = 0;//Starts at 0 because player starts with no coins
         health = 100;
         score = 0;
+        speed = 400f * Gdx.graphics.getDensity();//Speed calculated based on screen size
         isInvincible = false;
         invincibleTime = 0f;//Player is invincible for 2 seconds after hit
+        hasRunningShoes = false;
     }
 
     /*
@@ -60,6 +63,14 @@ public class Player {
 
     public void setPosition(float x, float y) {
         this.position = new Vector3(x, y, 0);
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 
     public Texture getPlayerImage() {
@@ -116,6 +127,14 @@ public class Player {
 
     public void setInvincibleTime(float invincibleTime) {
         this.invincibleTime = invincibleTime;
+    }
+
+    public boolean hasRunningShoes() {
+        return hasRunningShoes;
+    }
+
+    public void setHasRunningShoes(boolean haveRunningShoes) {
+        this.hasRunningShoes = haveRunningShoes;
     }
 
     public void dispose() {

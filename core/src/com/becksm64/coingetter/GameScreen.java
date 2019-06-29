@@ -113,7 +113,7 @@ public class GameScreen implements Screen {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(touchPos);//Gets correct touch position relative to camera
 
-            float maxDistance = Player.SPEED * Gdx.graphics.getDeltaTime();//Distance the player can move during current frame
+            float maxDistance = player.getSpeed() * Gdx.graphics.getDeltaTime();//Distance the player can move during current frame
             Player.tmp.set(touchPos.x, touchPos.y).sub(player.getPosition().x, player.getPosition().y);//A vector from the player to the touch point
 
             //Close enough to just set the player at the target but if not, move along vector towards touch position
@@ -141,6 +141,19 @@ public class GameScreen implements Screen {
                     player.setCoinsCollected(player.getCoinsCollected() - 30);//Reduce player coin count
                     hud.setCoinLabel(player.getCoinsCollected());//Update hud
                     enemyArray.remove(0);//Remove the first enemy in the array list
+                }
+            }
+        });
+
+        store.getRunningShoesBtn().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                if(player.getCoinsCollected() >= 50 && !player.hasRunningShoes()) {
+                    player.setHasRunningShoes(true);
+                    player.setCoinsCollected(player.getCoinsCollected() - 50);
+                    hud.setCoinLabel(player.getCoinsCollected());
+                    player.setSpeed(player.getSpeed() * 1.25f);
                 }
             }
         });

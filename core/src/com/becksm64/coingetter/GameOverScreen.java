@@ -24,12 +24,10 @@ public class GameOverScreen implements Screen {
     private Game game;
     private SpriteBatch batch;
     private Stage stage;
-    private Table table;
     private OrthographicCamera cam;
     private BitmapFont font, font2;
     private Skin skin;
     private Label gameOver;
-    private Label finalScore;
     private TextButton newBtn;
     private Random rng;
 
@@ -42,7 +40,7 @@ public class GameOverScreen implements Screen {
 
         //Setup stage and table for menu
         stage = new Stage();
-        table = new Table();
+        Table table = new Table();
         table.setFillParent(true);//Make table fill stage
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);//Set ability to take input on stage
@@ -60,7 +58,7 @@ public class GameOverScreen implements Screen {
         skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
         gameOver = new Label("[GAME OVER]", skin);
         gameOver.setStyle(new Label.LabelStyle(font, Color.WHITE));
-        finalScore = new Label("SCORE: " + String.valueOf(score), skin);
+        Label finalScore = new Label("SCORE: " + String.valueOf(score), skin);
         finalScore.setStyle(new Label.LabelStyle(font2, Color.WHITE));
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = font2;
