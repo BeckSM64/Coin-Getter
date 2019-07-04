@@ -133,8 +133,8 @@ public class Player {
         return hasRunningShoes;
     }
 
-    public void setHasRunningShoes(boolean haveRunningShoes) {
-        this.hasRunningShoes = haveRunningShoes;
+    public void setHasRunningShoes(boolean hasRunningShoes) {
+        this.hasRunningShoes = hasRunningShoes;
     }
 
     public void dispose() {

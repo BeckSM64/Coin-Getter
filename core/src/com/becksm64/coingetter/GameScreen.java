@@ -149,7 +149,7 @@ public class GameScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 
-                if(player.getCoinsCollected() >= 50 && !player.hasRunningShoes()) {
+                if(player.getCoinsCollected() >= 50 && player.hasRunningShoes() ==  false) {
                     player.setHasRunningShoes(true);
                     player.setCoinsCollected(player.getCoinsCollected() - 50);
                     hud.setCoinLabel(player.getCoinsCollected());
