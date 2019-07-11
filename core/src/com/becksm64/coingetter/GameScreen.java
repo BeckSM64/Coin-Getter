@@ -140,6 +140,7 @@ public class GameScreen implements Screen {
                 if(player.getCoinsCollected() >= 30 && enemyArray.size() > 0) {
                     player.setCoinsCollected(player.getCoinsCollected() - 30);//Reduce player coin count
                     hud.setCoinLabel(player.getCoinsCollected());//Update hud
+                    enemyArray.get(0).dispose();
                     enemyArray.remove(0);//Remove the first enemy in the array list
                 }
             }
@@ -306,6 +307,8 @@ public class GameScreen implements Screen {
         batch.dispose();
         for(Coin coin : coinArray)
             coin.dispose();
+        for(Enemy enemy : enemyArray)
+            enemy.dispose();
         hud.dispose();
         store.dispose();
     }
