@@ -70,7 +70,6 @@ public class Hud {
         table.add(score).width(scoreLabel.getPrefWidth()).left();
         table.row();
         table.add(storeBtn).right().bottom().pad(padding).expand().colspan(7);
-        table.debug();
 
         stage.addActor(table);
     }
