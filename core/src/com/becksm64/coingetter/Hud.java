@@ -22,6 +22,7 @@ public class Hud {
     private Label coinLabel;
     private Label score;
     private TextButton storeBtn;
+    private TextButton pauseBtn;
 
     public Hud(SpriteBatch batch) {
 
@@ -60,6 +61,7 @@ public class Hud {
         TextButton.TextButtonStyle btnStyle= new TextButton.TextButtonStyle();
         btnStyle.font = font;
         storeBtn = new TextButton("STORE", btnStyle);
+        pauseBtn = new TextButton("PAUSE", btnStyle);
 
         table.left();
         table.add(healthLabel).padLeft(padding).padRight(padding).right();
@@ -69,7 +71,8 @@ public class Hud {
         table.add(scoreLabel).padLeft(padding).padRight(padding).left();
         table.add(score).width(scoreLabel.getPrefWidth()).left();
         table.row();
-        table.add(storeBtn).right().bottom().pad(padding).expand().colspan(7);
+        table.add(pauseBtn).left().bottom().pad(padding).expand().colspan(4);
+        table.add(storeBtn).right().bottom().pad(padding).expand().colspan(3);
 
         stage.addActor(table);
     }
@@ -92,6 +95,10 @@ public class Hud {
 
     public TextButton getStoreBtn() {
         return storeBtn;
+    }
+
+    public TextButton getPauseBtn() {
+        return pauseBtn;
     }
 
     public void dispose() {

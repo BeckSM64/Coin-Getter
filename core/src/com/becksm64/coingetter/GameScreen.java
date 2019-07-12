@@ -29,9 +29,11 @@ public class GameScreen implements Screen {
     private Random rng;
     private Hud hud;
     private Store store;
+    private PauseMenu pauseMenu;
 
     private float timeSeconds;
     private boolean showStore;
+    private boolean isPaused;
 
     public GameScreen(Game game) {
 
@@ -48,12 +50,14 @@ public class GameScreen implements Screen {
                         rng.nextInt(Gdx.graphics.getHeight() - (int) Enemy.SIZE)));//Add initial enemy
         hud = new Hud(batch);
         store = new Store(batch);
+        pauseMenu = new PauseMenu(batch);
 
         //Setup input for multiple stages
         InputMultiplexer multiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(multiplexer);
         multiplexer.addProcessor(hud.getStage());
         multiplexer.addProcessor(store.getStage());
+        multiplexer.addProcessor(pauseMenu.getStage());
 
         //Generate initial coins and enemy
         generateCoins();
@@ -61,6 +65,7 @@ public class GameScreen implements Screen {
 
         timeSeconds = 0;//Keeps track of time passed for events that require specific time lapse
         showStore = false;
+        isPaused = false;
     }
 
     /*
@@ -164,7 +169,21 @@ public class GameScreen implements Screen {
         hud.getStoreBtn().addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+
+                //Only show the store if the pause menu isn't open
+                if(!isPaused)
                 showStore = !showStore;
+            }
+        });
+
+        //Open pause menu button
+        hud.getPauseBtn().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                //Only pause the game if the store isn't open
+                if(!showStore)
+                    isPaused = !isPaused;
             }
         });
     }
@@ -214,7 +233,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Update camera, player, and coins
-        if(!showStore) {
+        if(!showStore && !isPaused) {
 
             cam.update();
             player.update();
@@ -239,6 +258,13 @@ public class GameScreen implements Screen {
 
             batch.setProjectionMatrix(store.getStage().getCamera().combined);
             store.getStage().draw();
+        }
+
+        //Draw pause menu
+        if(isPaused) {
+
+            batch.setProjectionMatrix(pauseMenu.getStage().getCamera().combined);
+            pauseMenu.getStage().draw();
         }
 
         //Check if game is over
