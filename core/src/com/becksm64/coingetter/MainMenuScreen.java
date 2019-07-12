@@ -33,8 +33,8 @@ public class MainMenuScreen implements Screen {
     private BitmapFont font, font2;
     private Label gameTitle;
     private TextButton startBtn;
+    private TextButton highScoreBtn;
     private Random rng;
-    private Music music;
     private List<Coin> coinArray;
 
     public MainMenuScreen(Game game) {
@@ -67,17 +67,16 @@ public class MainMenuScreen implements Screen {
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = font2;
         startBtn = new TextButton("START", buttonStyle);
+        highScoreBtn = new TextButton("HIGH SCORES", buttonStyle);
 
         //Add texts and buttons to the table
         table.add(gameTitle);
         table.row();//Next row
         table.add(startBtn).padTop(10 * Gdx.graphics.getDensity());
+        table.row();
+        table.add(highScoreBtn);
 
-        //Create and start background music
         rng = new Random();
-        music = Gdx.audio.newMusic(Gdx.files.internal("audio/renaissance_endo.mp3"));
-        music.setLooping(true);
-        music.play();
 
         //Create random number of coins in an array with random positions and velocities. May have to use iterator
         coinArray = new ArrayList<Coin>();
@@ -89,7 +88,6 @@ public class MainMenuScreen implements Screen {
     }
 
     private Color changeTitleColor() {
-
         return new Color(rng.nextFloat(), rng.nextFloat(), rng.nextFloat(), 1);
     }
 
@@ -101,6 +99,15 @@ public class MainMenuScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 game.setScreen(new GameScreen(game));
+            }
+        });
+
+        //Button listener for high score button
+        highScoreBtn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.input.setInputProcessor(null);//Set the input processor to null so buttons for this screen are no longer active on the next screen
+                game.setScreen(new HighScoreScreen(game));
             }
         });
     }
@@ -130,6 +137,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+
         stage.getViewport().update(width, height);
         cam.setToOrtho(false, width, height);
         cam.update();
@@ -155,6 +163,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
+
         font.dispose();
         font2.dispose();
         skin.dispose();

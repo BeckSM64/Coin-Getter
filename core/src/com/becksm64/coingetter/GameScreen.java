@@ -3,6 +3,7 @@ package com.becksm64.coingetter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -214,6 +215,7 @@ public class GameScreen implements Screen {
 
         //Update camera, player, and coins
         if(!showStore) {
+
             cam.update();
             player.update();
             for (Coin coin : coinArray)
@@ -234,13 +236,23 @@ public class GameScreen implements Screen {
 
         //Draw Store
         if(showStore) {
+
             batch.setProjectionMatrix(store.getStage().getCamera().combined);
             store.getStage().draw();
         }
 
         //Check if game is over
         if(isGameOver()) {
+
             this.dispose();
+            Preferences prefs = Gdx.app.getPreferences("Coin Getter Preferences");
+            if(player.getScore() > prefs.getInteger("score"))
+                prefs.putInteger("score", player.getScore());
+            else if(player.getScore() > prefs.getInteger("score2"))
+                prefs.putInteger("score2", player.getScore());
+            else if(player.getScore() > prefs.getInteger("score3"))
+                prefs.putInteger("score3", player.getScore());
+            prefs.flush();
             game.setScreen(new GameOverScreen(game, player.getScore()));//Set game over screen
         }
     }
