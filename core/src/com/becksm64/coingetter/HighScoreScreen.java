@@ -84,7 +84,6 @@ public class HighScoreScreen implements Screen {
         table.add(score3).pad(padding).width(score.getPrefWidth());
         table.row();
         table.add(backBtn).expand().right().bottom().pad(padding);//Push button to the bottom right of screen and pad it
-
     }
 
     private Color changeTitleColor() {

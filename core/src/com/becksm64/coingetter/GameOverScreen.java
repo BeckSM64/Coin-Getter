@@ -28,7 +28,7 @@ public class GameOverScreen implements Screen {
     private BitmapFont font, font2;
     private Skin skin;
     private Label gameOver;
-    private TextButton newBtn;
+    private TextButton newBtn, menuBtn;
     private Random rng;
 
     public GameOverScreen(Game game, int score) {
@@ -63,6 +63,7 @@ public class GameOverScreen implements Screen {
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = font2;
         newBtn = new TextButton("NEW GAME", buttonStyle);
+        menuBtn = new TextButton("MAIN MENU", buttonStyle);
 
         //Add texts and buttons to the table
         table.add(gameOver);
@@ -70,6 +71,8 @@ public class GameOverScreen implements Screen {
         table.add(finalScore).padTop(10 * Gdx.graphics.getDensity());
         table.row();
         table.add(newBtn).padTop(10 * Gdx.graphics.getDensity());
+        table.row();
+        table.add(menuBtn).padTop(10 * Gdx.graphics.getDensity());
 
         rng = new Random();
     }
@@ -85,6 +88,14 @@ public class GameOverScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 game.setScreen(new GameScreen(game));
+            }
+        });
+
+        menuBtn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.input.setInputProcessor(null);
+                game.setScreen(new MainMenuScreen(game));
             }
         });
     }
