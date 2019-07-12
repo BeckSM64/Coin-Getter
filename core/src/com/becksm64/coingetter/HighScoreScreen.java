@@ -71,17 +71,9 @@ public class HighScoreScreen implements Screen {
         Preferences prefs = Gdx.app.getPreferences("Coin Getter Preferences");//Get scores from preferences
 
         //Set high scores based on saved preferences
-        if(!prefs.getString("score").isEmpty() && prefs.getString("score") != null) {
-            score.setText(score.getText() + prefs.getString("score"));
-        }
-
-        if(!prefs.getString("score2").isEmpty() && prefs.getString("score2") != null) {
-            score2.setText(score2.getText() + prefs.getString("score2"));
-        }
-
-        if(!prefs.getString("score3").isEmpty() && prefs.getString("score3") != null) {
-            score3.setText(score3.getText() + prefs.getString("score3"));
-        }
+        score.setText(score.getText() + String.valueOf(prefs.getInteger("score")));
+        score2.setText(score2.getText() + String.valueOf(prefs.getInteger("score2")));
+        score3.setText(score3.getText() + String.valueOf(prefs.getInteger("score3")));
 
         table.add(highScoreTitle).pad(padding);
         table.row();
