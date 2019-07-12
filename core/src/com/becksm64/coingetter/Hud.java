@@ -63,19 +63,14 @@ public class Hud {
 
         table.left();
         table.add(healthLabel).padLeft(padding).padRight(padding).right();
-        table.add(health).left();
+        table.add(health).width(healthLabel.getPrefWidth() / 2).left();
         table.add(new Image(new Texture("sprites/coin.png"))).width(Gdx.graphics.getWidth() / 10.0f).height(Gdx.graphics.getHeight() / 6.0f).right();
-        table.add(coinLabel).left();
+        table.add(coinLabel).width(scoreLabel.getPrefWidth()).left();
         table.add(scoreLabel).padLeft(padding).padRight(padding).left();
-        table.add(score).left();
-        table.row().expandY().expandX().colspan(7);
-        table.add(storeBtn).right().bottom().pad(padding);
-        //table.debug();
-
-        /*float healthWidth = table.getCell(health).getMinWidth();//Get width of health when label is three digits long
-        table.getCell(health).width(healthWidth);//Force cell to stay the width of three digit long label regardless of label size
-        float coinLabelWidth = table.getCell(coinLabel).getMinWidth() * 2;//Calculate size for cell
-        table.getCell(coinLabel).width(coinLabelWidth);//Set fixed cell size*/
+        table.add(score).width(scoreLabel.getPrefWidth()).left();
+        table.row();
+        table.add(storeBtn).right().bottom().pad(padding).expand().colspan(7);
+        table.debug();
 
         stage.addActor(table);
     }
