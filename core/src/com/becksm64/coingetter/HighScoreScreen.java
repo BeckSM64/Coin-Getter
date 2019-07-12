@@ -16,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import java.util.Random;
+
 public class HighScoreScreen implements Screen {
 
     private Game game;
@@ -27,10 +29,12 @@ public class HighScoreScreen implements Screen {
     private Label score3;
     private TextButton backBtn;
     private Stage stage;
+    private Random rng;
 
     public HighScoreScreen(Game game) {
 
         this.game = game;
+        rng = new Random();
 
         //Setup stage and table for menu
         stage = new Stage();
@@ -91,6 +95,10 @@ public class HighScoreScreen implements Screen {
 
     }
 
+    private Color changeTitleColor() {
+        return new Color(rng.nextFloat(), rng.nextFloat(), rng.nextFloat(), 1);
+    }
+
     @Override
     public void show() {
 
@@ -111,6 +119,7 @@ public class HighScoreScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.draw();
+        highScoreTitle.setStyle(new Label.LabelStyle(font, changeTitleColor()));//Change color of high score title every frame
     }
 
     @Override
