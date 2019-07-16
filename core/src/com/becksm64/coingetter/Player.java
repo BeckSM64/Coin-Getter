@@ -17,6 +17,7 @@ public class Player {
     private int coinsCollected;
     private int health;
     private int score;
+    private Vector3 velocity;
     private float speed;
     private boolean isInvincible;
     private float invincibleTime;
@@ -30,6 +31,7 @@ public class Player {
         coinsCollected = 0;//Starts at 0 because player starts with no coins
         health = 100;
         score = 0;
+        velocity = new Vector3(0, 0, 0);
         speed = 400f * Gdx.graphics.getDensity();//Speed calculated based on screen size
         isInvincible = false;
         invincibleTime = 0f;//Player is invincible for 2 seconds after hit
@@ -54,6 +56,7 @@ public class Player {
 
     public void update() {
         setBounds(position.x, position.y);
+        position.add(velocity.x, velocity.y, 0);
         constrainPlayer();
     }
 
@@ -83,6 +86,14 @@ public class Player {
 
     private void setBounds(float x, float y) {
         bounds.setPosition(x, y);
+    }
+
+    public Vector3 getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(float velX, float velY) {
+        this.velocity = new Vector3(velX, velY, 0);
     }
 
     public int getCoinsCollected() {

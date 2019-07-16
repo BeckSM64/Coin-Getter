@@ -2,6 +2,7 @@ package com.becksm64.coingetter;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
@@ -114,6 +115,7 @@ public class GameScreen implements Screen {
      */
     private void movePlayer() {
 
+        //Touch movement controls
         if(Gdx.input.isTouched()) {
 
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -131,6 +133,31 @@ public class GameScreen implements Screen {
                 player.getPosition().x += Player.tmp.x;//Move player by the vector length
                 player.getPosition().y += Player.tmp.y;
             }
+        }
+
+        //Keyboard movement controls
+        if(Gdx.input.isKeyPressed(Input.Keys.W)) {//Check if W is pressed (Up)
+            player.setVelocity(player.getVelocity().x, (float) 5 * Gdx.graphics.getDensity());
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.D)) {//Check if D is pressed (Right)
+            player.setVelocity((float) 5 * Gdx.graphics.getDensity(), player.getVelocity().y);
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.S)) {//Check if S is pressed (Down)
+            player.setVelocity(player.getVelocity().x, (float) -5 * Gdx.graphics.getDensity());
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.A)) {//Check if A is pressed (Left)
+            player.setVelocity((float) -5 * Gdx.graphics.getDensity(), player.getVelocity().y);
+        }
+
+        if(!Gdx.input.isKeyPressed(Input.Keys.W) && !Gdx.input.isKeyPressed(Input.Keys.S)) {//Stop moving up or down
+            player.setVelocity(player.getVelocity().x, 0);
+        }
+
+        if(!Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D)) {//Stop moving left or right
+            player.setVelocity(0, player.getVelocity().y);
         }
     }
 
@@ -272,12 +299,16 @@ public class GameScreen implements Screen {
 
             this.dispose();
             Preferences prefs = Gdx.app.getPreferences("Coin Getter Preferences");
-            if(player.getScore() > prefs.getInteger("score"))
+            if(player.getScore() > prefs.getInteger("score")) {
+                prefs.getInteger("score3", prefs.getInteger("score2"));
+                prefs.getInteger("score2", prefs.getInteger("score"));
                 prefs.putInteger("score", player.getScore());
-            else if(player.getScore() > prefs.getInteger("score2"))
+            } else if(player.getScore() > prefs.getInteger("score2")) {
+                prefs.getInteger("score3", prefs.getInteger("score2"));
                 prefs.putInteger("score2", player.getScore());
-            else if(player.getScore() > prefs.getInteger("score3"))
+            } else if(player.getScore() > prefs.getInteger("score3")) {
                 prefs.putInteger("score3", player.getScore());
+            }
             prefs.flush();
             game.setScreen(new GameOverScreen(game, player.getScore()));//Set game over screen
         }
