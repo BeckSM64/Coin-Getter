@@ -31,8 +31,10 @@ public class GameScreen implements Screen {
     private Hud hud;
     private Store store;
     private PauseMenu pauseMenu;
+    private HealthBonus healthBonus;
 
     private float timeSeconds;
+    private float timeSecondsBonus;//Timer for health bonus (Change this probably)
     private boolean showStore;
     private boolean isPaused;
 
@@ -49,6 +51,10 @@ public class GameScreen implements Screen {
         enemyArray = new ArrayList<Enemy>();
         enemyArray.add(new Enemy(rng.nextInt(Gdx.graphics.getWidth() - (int) Enemy.SIZE),
                         rng.nextInt(Gdx.graphics.getHeight() - (int) Enemy.SIZE)));//Add initial enemy
+        healthBonus = new HealthBonus(rng.nextInt(Gdx.graphics.getWidth() - (int) Coin.WIDTH),
+                rng.nextInt(Gdx.graphics.getHeight() - (int) Coin.HEIGHT),
+                (int) ((rng.nextInt(5)) * Gdx.graphics.getDensity()) + 1,
+                (int) ((rng.nextInt(5)) * Gdx.graphics.getDensity()) + 1);
         hud = new Hud(batch);
         store = new Store(batch);
         pauseMenu = new PauseMenu(batch);
@@ -81,12 +87,31 @@ public class GameScreen implements Screen {
     }
 
     /*
+     * Generate a health bonus powerup at a random position with a random velocity
+     */
+    private void generateHealthBonus() {
+
+        timeSecondsBonus += Gdx.graphics.getRawDeltaTime();
+        if (timeSecondsBonus > 20f) {
+
+            timeSecondsBonus -= 20f;//Reset time passed
+            if(healthBonus == null) {
+
+                healthBonus = new HealthBonus(rng.nextInt(Gdx.graphics.getWidth() - (int) Coin.WIDTH),
+                        rng.nextInt(Gdx.graphics.getHeight() - (int) Coin.HEIGHT),
+                        (int) ((rng.nextInt(5)) * Gdx.graphics.getDensity()) + 1,
+                        (int) ((rng.nextInt(5)) * Gdx.graphics.getDensity()) + 1);
+            }
+        }
+    }
+
+    /*
      * Adds an enemy to the enemy array with a randomly generated position on the screen
      * Only adds a new enemy if 10 seconds has passed
      */
     private void addEnemy() {
 
-        timeSeconds += Gdx.graphics.getRawDeltaTime();//Wait specified amount of time until opponent takes their turn
+        timeSeconds += Gdx.graphics.getRawDeltaTime();
         if (timeSeconds > 20f) {
             timeSeconds -= 20f;//Reset time passed
             enemyArray.add(new Enemy(rng.nextInt(Gdx.graphics.getWidth() - (int) Enemy.SIZE),
@@ -248,6 +273,9 @@ public class GameScreen implements Screen {
         //Draw enemies
         for(Enemy enemy : enemyArray)
             batch.draw(enemy.getEnemyImage(), enemy.getPosition().x, enemy.getPosition().y, Enemy.SIZE, Enemy.SIZE);//Draw enemy
+
+        if(healthBonus != null)
+            batch.draw(healthBonus.getHealthBonusImage(), healthBonus.getPosition().x, healthBonus.getPosition().y, healthBonus.WIDTH, healthBonus.HEIGHT);
         batch.end();
     }
 
@@ -268,7 +296,10 @@ public class GameScreen implements Screen {
                 coin.update();
             for (Enemy enemy : enemyArray)
                 enemy.update();
+            if(healthBonus != null)
+                healthBonus.update();
             addEnemy();
+            //generateHealthBonus();
             movePlayer();
             increaseScore();
             collision();//Check for collision
@@ -348,6 +379,13 @@ public class GameScreen implements Screen {
                 player.setInvincible(false);//No longer invincible after 2 seconds
             }
         }
+
+        //Check if player collided with the health bonus
+        if(healthBonus != null && player.getBounds().overlaps(healthBonus.getBounds())) {
+            player.setHealth(100);//Set player health to max health
+            hud.setHealth(player.getHealth());//Update hud
+            healthBonus = null;
+        }
     }
 
     @Override
@@ -378,6 +416,8 @@ public class GameScreen implements Screen {
             coin.dispose();
         for(Enemy enemy : enemyArray)
             enemy.dispose();
+        if(healthBonus != null)
+            healthBonus.dispose();
         hud.dispose();
         store.dispose();
     }
