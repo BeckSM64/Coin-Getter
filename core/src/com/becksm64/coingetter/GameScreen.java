@@ -51,10 +51,11 @@ public class GameScreen implements Screen {
         enemyArray = new ArrayList<Enemy>();
         enemyArray.add(new Enemy(rng.nextInt(Gdx.graphics.getWidth() - (int) Enemy.SIZE),
                         rng.nextInt(Gdx.graphics.getHeight() - (int) Enemy.SIZE)));//Add initial enemy
-        healthBonus = new HealthBonus(rng.nextInt(Gdx.graphics.getWidth() - (int) Coin.WIDTH),
+        /*healthBonus = new HealthBonus(rng.nextInt(Gdx.graphics.getWidth() - (int) Coin.WIDTH),
                 rng.nextInt(Gdx.graphics.getHeight() - (int) Coin.HEIGHT),
                 (int) ((rng.nextInt(5)) * Gdx.graphics.getDensity()) + 1,
-                (int) ((rng.nextInt(5)) * Gdx.graphics.getDensity()) + 1);
+                (int) ((rng.nextInt(5)) * Gdx.graphics.getDensity()) + 1);*/
+        healthBonus = null;
         hud = new Hud(batch);
         store = new Store(batch);
         pauseMenu = new PauseMenu(batch);
@@ -261,12 +262,6 @@ public class GameScreen implements Screen {
             for (Coin coin : coinArray)
                 batch.draw(coin.getCoinImage(), coin.getPosition().x, coin.getPosition().y, Coin.WIDTH, Coin.HEIGHT);
         } else {
-
-            //Add 10 to player health whenever they collect all the coins on the screen, only if they have less than 100 health
-            if(!player.hasFullHealth()) {
-                player.setHealth(player.getHealth() + 10);
-                hud.setHealth(player.getHealth());
-            }
             generateCoins();
         }
 
