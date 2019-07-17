@@ -270,7 +270,7 @@ public class GameScreen implements Screen {
             batch.draw(enemy.getEnemyImage(), enemy.getPosition().x, enemy.getPosition().y, Enemy.SIZE, Enemy.SIZE);//Draw enemy
 
         if(healthBonus != null)
-            batch.draw(healthBonus.getHealthBonusImage(), healthBonus.getPosition().x, healthBonus.getPosition().y, healthBonus.WIDTH, healthBonus.HEIGHT);
+            batch.draw(healthBonus.getHealthBonusImage(), healthBonus.getPosition().x, healthBonus.getPosition().y, HealthBonus.WIDTH, HealthBonus.HEIGHT);
         batch.end();
     }
 
@@ -363,6 +363,8 @@ public class GameScreen implements Screen {
                 hud.setHealth(player.getHealth());//Update hud to reflect current player health
                 enemy.setVelocity(enemy.getVelocity().x * -1, enemy.getVelocity().y * -1);
                 player.setInvincible(true);
+
+                Gdx.input.vibrate(200);//Android vibration for enemy collission
             }
         }
 
