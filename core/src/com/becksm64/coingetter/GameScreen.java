@@ -310,6 +310,7 @@ public class GameScreen implements Screen {
 
             batch.setProjectionMatrix(store.getStage().getCamera().combined);
             store.getStage().draw();
+            store.getStage().act();
         }
 
         //Draw pause menu
