@@ -34,6 +34,7 @@ public class GameScreen implements Screen {
     private HealthBonus healthBonus;
 
     private float timeSeconds;
+    private float enemyRespawnTime;
     private float timeSecondsBonus;//Timer for health bonus (Change this probably)
     private float healthBonusSpawnTime;//Randomly generated cooldown time for health bonus spawn
     private boolean showStore;
@@ -56,6 +57,7 @@ public class GameScreen implements Screen {
         hud = new Hud(batch);
         store = new Store(batch);
         pauseMenu = new PauseMenu(batch);
+        enemyRespawnTime = 20f;
         healthBonusSpawnTime = rng.nextInt(60);//Spawn time for health bonus randomly generated between 0 and 1 minute
 
         //Setup input for multiple stages
@@ -112,8 +114,8 @@ public class GameScreen implements Screen {
     private void addEnemy() {
 
         timeSeconds += Gdx.graphics.getRawDeltaTime();
-        if (timeSeconds > 20f) {
-            timeSeconds -= 20f;//Reset time passed
+        if (timeSeconds > enemyRespawnTime) {
+            timeSeconds -= enemyRespawnTime;//Reset time passed
             enemyArray.add(new Enemy(rng.nextInt(Gdx.graphics.getWidth() - (int) Enemy.SIZE),
                     rng.nextInt(Gdx.graphics.getHeight() - (int) Enemy.SIZE)));
         }
@@ -224,6 +226,18 @@ public class GameScreen implements Screen {
                 if(player.getCoinsCollected() >= 60 && !player.hasShield()) {
                     player.setHasShield(true);
                     player.setCoinsCollected(player.getCoinsCollected() - 60);
+                    hud.setCoinLabel(player.getCoinsCollected());
+                }
+            }
+        });
+
+        store.getSlowerRespawnBtn().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                if(player.getCoinsCollected() >= 10 && enemyRespawnTime < 40) {
+                    enemyRespawnTime *= 2;//Double the enemy respawn time
+                    player.setCoinsCollected(player.getCoinsCollected() - 100);
                     hud.setCoinLabel(player.getCoinsCollected());
                 }
             }

@@ -27,6 +27,7 @@ public class Store {
     private ImageButton removeEnemyBtn;
     private ImageButton runningShoesBtn;
     private ImageButton shieldBtn;
+    private ImageButton slowerRespawnBtn;
     private BitmapFont font;
     private Random rng;
 
@@ -75,6 +76,11 @@ public class Store {
         Drawable shieldDrawable = new TextureRegionDrawable(shieldRegion);
         shieldBtn = new ImageButton(shieldDrawable);
 
+        Texture slowerRespawnTexture = new Texture(Gdx.files.internal("sprites/slowerRespawnBtn.png"));
+        TextureRegion slowerRespawnRegion = new TextureRegion(slowerRespawnTexture);
+        Drawable slowerRespawnDrawable = new TextureRegionDrawable(slowerRespawnRegion);
+        slowerRespawnBtn = new ImageButton(slowerRespawnDrawable);
+
         //Add actors to table with appropriate padding
         table.add(storeTitle);
         table.row();
@@ -83,6 +89,8 @@ public class Store {
         table.add(runningShoesBtn).padTop(padding).size(storeTitle.getPrefWidth(), storeTitle.getPrefHeight());
         table.row();
         table.add(shieldBtn).padTop(padding).size(storeTitle.getPrefWidth(), storeTitle.getPrefHeight());
+        table.row();
+        table.add(slowerRespawnBtn).padTop(padding).size(storeTitle.getPrefWidth(), storeTitle.getPrefHeight());
         table.pad(padding);
 
         //Create the container table which will hold the scrollpane
@@ -110,6 +118,10 @@ public class Store {
 
     public ImageButton getShieldBtn() {
         return shieldBtn;
+    }
+
+    public ImageButton getSlowerRespawnBtn() {
+        return slowerRespawnBtn;
     }
 
     private void changeTitleColor() {
