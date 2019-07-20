@@ -9,6 +9,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 600;
 		config.height = 300;
+		config.resizable = false;
 		new LwjglApplication(new CoinGetter(), config);
 	}
 }

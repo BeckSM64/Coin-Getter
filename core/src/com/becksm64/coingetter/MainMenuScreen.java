@@ -138,12 +138,6 @@ public class MainMenuScreen implements Screen {
     @Override
     public void resize(int width, int height) {
 
-        stage.getViewport().update(width, height);
-        cam.setToOrtho(false, width, height);
-        cam.update();
-        batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
-        for(Coin coin : coinArray)
-            coin.update();
     }
 
     @Override
