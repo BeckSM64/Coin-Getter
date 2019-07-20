@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 
 public class HealthBonus {
 
-    public static final float WIDTH = Gdx.graphics.getWidth() / 20.0f;
+    public static final float WIDTH = Gdx.graphics.getWidth() / 23.0f;
     public static final float HEIGHT = Gdx.graphics.getHeight() / 12.0f;
 
     private Texture healthBonusImage;
@@ -17,7 +17,7 @@ public class HealthBonus {
 
     public HealthBonus(int x, int y, int velX, int velY) {
 
-        healthBonusImage = new Texture("sprites/bullet.png");
+        healthBonusImage = new Texture("sprites/healthBonus.png");
         position = new Vector3(x, y, 0);
         velocity = new Vector3(velX, velY, 0);
         bounds = new Rectangle(x, y, WIDTH, HEIGHT);

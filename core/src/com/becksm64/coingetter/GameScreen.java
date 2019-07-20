@@ -35,6 +35,7 @@ public class GameScreen implements Screen {
 
     private float timeSeconds;
     private float timeSecondsBonus;//Timer for health bonus (Change this probably)
+    private float healthBonusSpawnTime;//Randomly generated cooldown time for health bonus spawn
     private boolean showStore;
     private boolean isPaused;
 
@@ -51,14 +52,11 @@ public class GameScreen implements Screen {
         enemyArray = new ArrayList<Enemy>();
         enemyArray.add(new Enemy(rng.nextInt(Gdx.graphics.getWidth() - (int) Enemy.SIZE),
                         rng.nextInt(Gdx.graphics.getHeight() - (int) Enemy.SIZE)));//Add initial enemy
-        /*healthBonus = new HealthBonus(rng.nextInt(Gdx.graphics.getWidth() - (int) Coin.WIDTH),
-                rng.nextInt(Gdx.graphics.getHeight() - (int) Coin.HEIGHT),
-                (int) ((rng.nextInt(5)) * Gdx.graphics.getDensity()) + 1,
-                (int) ((rng.nextInt(5)) * Gdx.graphics.getDensity()) + 1);*/
         healthBonus = null;
         hud = new Hud(batch);
         store = new Store(batch);
         pauseMenu = new PauseMenu(batch);
+        healthBonusSpawnTime = rng.nextInt(60);//Spawn time for health bonus randomly generated between 0 and 1 minute
 
         //Setup input for multiple stages
         InputMultiplexer multiplexer = new InputMultiplexer();
@@ -93,9 +91,9 @@ public class GameScreen implements Screen {
     private void generateHealthBonus() {
 
         timeSecondsBonus += Gdx.graphics.getRawDeltaTime();
-        if (timeSecondsBonus > 20f) {
+        if (timeSecondsBonus > healthBonusSpawnTime) {
 
-            timeSecondsBonus -= 20f;//Reset time passed
+            timeSecondsBonus -= healthBonusSpawnTime;//Reset time passed
             if(healthBonus == null) {
 
                 healthBonus = new HealthBonus(rng.nextInt(Gdx.graphics.getWidth() - (int) Coin.WIDTH),
@@ -103,6 +101,7 @@ public class GameScreen implements Screen {
                         (int) ((rng.nextInt(5)) * Gdx.graphics.getDensity()) + 1,
                         (int) ((rng.nextInt(5)) * Gdx.graphics.getDensity()) + 1);
             }
+            healthBonusSpawnTime = rng.nextInt(60);//Generate new health bonus spawn time between 0 and 1 minute
         }
     }
 
@@ -294,7 +293,7 @@ public class GameScreen implements Screen {
             if(healthBonus != null)
                 healthBonus.update();
             addEnemy();
-            //generateHealthBonus();
+            generateHealthBonus();
             movePlayer();
             increaseScore();
             collision();//Check for collision
