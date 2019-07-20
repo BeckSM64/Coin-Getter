@@ -26,6 +26,7 @@ public class Store {
     private Label storeTitle;
     private ImageButton removeEnemyBtn;
     private ImageButton runningShoesBtn;
+    private ImageButton shieldBtn;
     private BitmapFont font;
     private Random rng;
 
@@ -59,15 +60,20 @@ public class Store {
         storeTitle.setStyle(new Label.LabelStyle(font, Color.WHITE));
 
         //Create buttons
-        Texture enemyTexture = new Texture(Gdx.files.internal("sprites/rmvEnemyBtn.png"));//Test image, replace with actual store button image when finished
+        Texture enemyTexture = new Texture(Gdx.files.internal("sprites/rmvEnemyBtn.png"));
         TextureRegion enemyRegion = new TextureRegion(enemyTexture);
         Drawable enemyDrawable = new TextureRegionDrawable(enemyRegion);
         removeEnemyBtn = new ImageButton(enemyDrawable);
 
-        Texture shoesTexture = new Texture(Gdx.files.internal("sprites/runningShoesBtn.png"));//Test image, replace with actual store button image when finished
+        Texture shoesTexture = new Texture(Gdx.files.internal("sprites/runningShoesBtn.png"));
         TextureRegion shoesRegion = new TextureRegion(shoesTexture);
         Drawable shoesDrawable = new TextureRegionDrawable(shoesRegion);
         runningShoesBtn = new ImageButton(shoesDrawable);
+
+        Texture shieldTexture = new Texture(Gdx.files.internal("sprites/shieldBtn.png"));
+        TextureRegion shieldRegion = new TextureRegion(shieldTexture);
+        Drawable shieldDrawable = new TextureRegionDrawable(shieldRegion);
+        shieldBtn = new ImageButton(shieldDrawable);
 
         //Add actors to table with appropriate padding
         table.add(storeTitle);
@@ -75,6 +81,8 @@ public class Store {
         table.add(removeEnemyBtn).padTop(padding).size(storeTitle.getPrefWidth(), storeTitle.getPrefHeight());
         table.row();
         table.add(runningShoesBtn).padTop(padding).size(storeTitle.getPrefWidth(), storeTitle.getPrefHeight());
+        table.row();
+        table.add(shieldBtn).padTop(padding).size(storeTitle.getPrefWidth(), storeTitle.getPrefHeight());
         table.pad(padding);
 
         //Create the container table which will hold the scrollpane
@@ -98,6 +106,10 @@ public class Store {
 
     public ImageButton getRunningShoesBtn() {
         return runningShoesBtn;
+    }
+
+    public ImageButton getShieldBtn() {
+        return shieldBtn;
     }
 
     private void changeTitleColor() {

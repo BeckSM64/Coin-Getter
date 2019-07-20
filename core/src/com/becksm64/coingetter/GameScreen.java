@@ -208,11 +208,23 @@ public class GameScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 
-                if(player.getCoinsCollected() >= 50 && player.hasRunningShoes() ==  false) {
+                if(player.getCoinsCollected() >= 50 && !player.hasRunningShoes()) {
                     player.setHasRunningShoes(true);
                     player.setCoinsCollected(player.getCoinsCollected() - 50);
                     hud.setCoinLabel(player.getCoinsCollected());
                     player.setSpeed(player.getSpeed() * 1.25f);
+                }
+            }
+        });
+
+        store.getShieldBtn().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                if(player.getCoinsCollected() >= 60 && !player.hasShield()) {
+                    player.setHasShield(true);
+                    player.setCoinsCollected(player.getCoinsCollected() - 60);
+                    hud.setCoinLabel(player.getCoinsCollected());
                 }
             }
         });
@@ -359,7 +371,11 @@ public class GameScreen implements Screen {
         for(Enemy enemy : enemyArray) {
             if (player.getBounds().overlaps(enemy.getBounds()) && !player.isInvincible()) {
 
-                player.setHealth(player.getHealth() - 10);//Decrease health by 10 if hit by enemy
+                if(!player.hasShield())
+                    player.setHealth(player.getHealth() - 10);//Decrease health by 10 if hit by enemy
+                else
+                    player.setHealth(player.getHealth() - 5);//Decrease health by 5 if player has shield
+
                 hud.setHealth(player.getHealth());//Update hud to reflect current player health
                 enemy.setVelocity(enemy.getVelocity().x * -1, enemy.getVelocity().y * -1);
                 player.setInvincible(true);

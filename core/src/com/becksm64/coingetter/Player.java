@@ -22,6 +22,7 @@ public class Player {
     private boolean isInvincible;
     private float invincibleTime;
     private boolean hasRunningShoes;
+    private boolean hasShield;
 
     public Player(float x, float y) {
 
@@ -36,6 +37,7 @@ public class Player {
         isInvincible = false;
         invincibleTime = 0f;//Player is invincible for 2 seconds after hit
         hasRunningShoes = false;
+        hasShield = false;
     }
 
     /*
@@ -146,6 +148,14 @@ public class Player {
 
     public void setHasRunningShoes(boolean hasRunningShoes) {
         this.hasRunningShoes = hasRunningShoes;
+    }
+
+    public boolean hasShield() {
+        return hasShield;
+    }
+
+    public void setHasShield(boolean hasShield) {
+        this.hasShield = hasShield;
     }
 
     public void dispose() {
