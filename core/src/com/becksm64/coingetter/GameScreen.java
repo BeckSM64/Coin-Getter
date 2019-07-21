@@ -236,7 +236,7 @@ public class GameScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
 
                 if(player.getCoinsCollected() >= 10 && enemyRespawnTime < 40) {
-                    enemyRespawnTime *= 2;//Double the enemy respawn time
+                    enemyRespawnTime *= 1.5;//Increase enemy respawn time by 50%
                     player.setCoinsCollected(player.getCoinsCollected() - 100);
                     hud.setCoinLabel(player.getCoinsCollected());
                 }
