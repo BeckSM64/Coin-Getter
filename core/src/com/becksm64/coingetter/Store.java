@@ -64,22 +64,34 @@ public class Store {
         Texture enemyTexture = new Texture(Gdx.files.internal("sprites/rmvEnemyBtn.png"));
         TextureRegion enemyRegion = new TextureRegion(enemyTexture);
         Drawable enemyDrawable = new TextureRegionDrawable(enemyRegion);
-        removeEnemyBtn = new ImageButton(enemyDrawable);
+        Texture enemyTextureClicked = new Texture(Gdx.files.internal("sprites/rmvEnemyClicked.png"));
+        TextureRegion enemyRegionClicked = new TextureRegion(enemyTextureClicked);
+        Drawable enemyDrawableClicked = new TextureRegionDrawable(enemyRegionClicked);
+        removeEnemyBtn = new ImageButton(enemyDrawable, enemyDrawableClicked);
 
         Texture shoesTexture = new Texture(Gdx.files.internal("sprites/runningShoesBtn.png"));
         TextureRegion shoesRegion = new TextureRegion(shoesTexture);
         Drawable shoesDrawable = new TextureRegionDrawable(shoesRegion);
-        runningShoesBtn = new ImageButton(shoesDrawable);
+        Texture shoesClickedTexture = new Texture(Gdx.files.internal("sprites/runningShoesClicked.png"));
+        TextureRegion shoesClickedRegion = new TextureRegion(shoesClickedTexture);
+        Drawable shoesClickedDrawable = new TextureRegionDrawable(shoesClickedRegion);
+        runningShoesBtn = new ImageButton(shoesDrawable, shoesClickedDrawable);
 
         Texture shieldTexture = new Texture(Gdx.files.internal("sprites/shieldBtn.png"));
         TextureRegion shieldRegion = new TextureRegion(shieldTexture);
         Drawable shieldDrawable = new TextureRegionDrawable(shieldRegion);
-        shieldBtn = new ImageButton(shieldDrawable);
+        Texture shieldTextureClicked = new Texture(Gdx.files.internal("sprites/shieldClicked.png"));
+        TextureRegion shieldRegionClicked = new TextureRegion(shieldTextureClicked);
+        Drawable shieldDrawableClicked = new TextureRegionDrawable(shieldRegionClicked);
+        shieldBtn = new ImageButton(shieldDrawable, shieldDrawableClicked);
 
         Texture slowerRespawnTexture = new Texture(Gdx.files.internal("sprites/slowerRespawnBtn.png"));
         TextureRegion slowerRespawnRegion = new TextureRegion(slowerRespawnTexture);
         Drawable slowerRespawnDrawable = new TextureRegionDrawable(slowerRespawnRegion);
-        slowerRespawnBtn = new ImageButton(slowerRespawnDrawable);
+        Texture slowerRespawnTextureClicked = new Texture(Gdx.files.internal("sprites/slowerRespawnClicked.png"));
+        TextureRegion slowerRespawnRegionClicked = new TextureRegion(slowerRespawnTextureClicked);
+        Drawable slowerRespawnDrawableClicked = new TextureRegionDrawable(slowerRespawnRegionClicked);
+        slowerRespawnBtn = new ImageButton(slowerRespawnDrawable, slowerRespawnDrawableClicked);
 
         //Add actors to table with appropriate padding
         table.add(storeTitle);

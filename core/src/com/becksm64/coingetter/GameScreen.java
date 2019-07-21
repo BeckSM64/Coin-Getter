@@ -12,7 +12,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -192,9 +194,10 @@ public class GameScreen implements Screen {
     public void show() {
 
         //Store button to purchase remove enemy power up which removes one enemy from the screen on purchase
-        store.getRemoveEnemyBtn().addListener(new ChangeListener() {
+        store.getRemoveEnemyBtn().addListener(new ClickListener() {
+
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 
                 //Player must have at least 30 coins and there must be at least one enemy on screen to purchase this power up
                 if(player.getCoinsCollected() >= 30 && enemyArray.size() > 0) {
@@ -203,12 +206,16 @@ public class GameScreen implements Screen {
                     enemyArray.get(0).dispose();
                     enemyArray.remove(0);//Remove the first enemy in the array list
                 }
+
+                super.touchUp(event, x, y, pointer, button);
             }
         });
 
-        store.getRunningShoesBtn().addListener(new ChangeListener() {
+        //Listener for the running shoes power up button which increases player speed
+        store.getRunningShoesBtn().addListener(new ClickListener() {
+
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 
                 if(player.getCoinsCollected() >= 50 && !player.hasRunningShoes()) {
                     player.setHasRunningShoes(true);
@@ -216,30 +223,41 @@ public class GameScreen implements Screen {
                     hud.setCoinLabel(player.getCoinsCollected());
                     player.setSpeed(player.getSpeed() * 1.25f);
                 }
+
+                super.touchUp(event, x, y, pointer, button);
             }
         });
 
-        store.getShieldBtn().addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
+        //Store button to purchase shield power up which reduces enemy damage taken by 50%
+        store.getShieldBtn().addListener(new ClickListener() {
 
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+
+                //Player must have at least 60 coins and not already have the shield powerup
                 if(player.getCoinsCollected() >= 60 && !player.hasShield()) {
                     player.setHasShield(true);
                     player.setCoinsCollected(player.getCoinsCollected() - 60);
                     hud.setCoinLabel(player.getCoinsCollected());
                 }
+
+                super.touchUp(event, x, y, pointer, button);
             }
         });
 
-        store.getSlowerRespawnBtn().addListener(new ChangeListener() {
+        //Store button to purchase slower enemy respawn powerup which increases enemy respawn time by 50%
+        store.getSlowerRespawnBtn().addListener(new ClickListener() {
+
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 
                 if(player.getCoinsCollected() >= 10 && enemyRespawnTime < 40) {
                     enemyRespawnTime *= 1.5;//Increase enemy respawn time by 50%
                     player.setCoinsCollected(player.getCoinsCollected() - 100);
                     hud.setCoinLabel(player.getCoinsCollected());
                 }
+
+                super.touchUp(event, x, y, pointer, button);
             }
         });
 
