@@ -417,9 +417,13 @@ public class GameScreen implements Screen {
         }
 
         //Check if player collided with the health bonus
-        if(healthBonus != null && player.getBounds().overlaps(healthBonus.getBounds())) {
+        if(healthBonus != null && player.getBounds().overlaps(healthBonus.getBounds()) && player.getHealth() < 100) {
             player.setHealth(100);//Set player health to max health
             hud.setHealth(player.getHealth());//Update hud
+            healthBonus = null;
+        } else if(healthBonus != null && player.getBounds().overlaps(healthBonus.getBounds()) && player.getHealth() == 100) {
+            player.setScore(player.getScore() + 500);//Increase score by 500 if player has full health when bonus is collected
+            hud.setScore(player.getScore());
             healthBonus = null;
         }
     }
