@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -18,7 +19,8 @@ public class PauseMenu {
 
     private Stage stage;
     private Label pauseLabel;
-    private BitmapFont font;
+    private TextButton mainMenuBtn;
+    private BitmapFont font, font2;
     private Random rng;
 
     public PauseMenu(SpriteBatch batch) {
@@ -30,6 +32,8 @@ public class PauseMenu {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (int) (50 * Gdx.graphics.getDensity());
         font = generator.generateFont(parameter);
+        parameter.size = (int) (30 * Gdx.graphics.getDensity());
+        font2 = generator.generateFont(parameter);
         generator.dispose();
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -42,8 +46,19 @@ public class PauseMenu {
         pauseLabel = new Label("[PAUSE]", skin);
         pauseLabel.setStyle(new Label.LabelStyle(font, Color.WHITE));
 
+        TextButton.TextButtonStyle btnStyle = new TextButton.TextButtonStyle();
+        btnStyle.font = font2;
+        mainMenuBtn = new TextButton("MAIN MENU", btnStyle);
+
         table.add(pauseLabel);
+        table.row();
+        table.add(mainMenuBtn);
+
         stage.addActor(table);
+    }
+
+    public TextButton getMainMenuBtn() {
+        return mainMenuBtn;
     }
 
     private void changePauseColor() {

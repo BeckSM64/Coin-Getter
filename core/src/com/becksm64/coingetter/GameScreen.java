@@ -264,6 +264,15 @@ public class GameScreen implements Screen {
                     isPaused = !isPaused;
             }
         });
+
+        pauseMenu.getMainMenuBtn().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                dispose();
+                game.setScreen(new MainMenuScreen(game));
+            }
+        });
     }
 
     /*
