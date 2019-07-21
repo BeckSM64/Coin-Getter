@@ -83,8 +83,8 @@ public class MainMenuScreen implements Screen {
         for(int i = 0; i < rng.nextInt(20); i++)
             coinArray.add(new Coin(rng.nextInt(Gdx.graphics.getWidth() - (int) Coin.WIDTH),
                     rng.nextInt(Gdx.graphics.getHeight() - (int ) Coin.HEIGHT),
-                    (int) ((rng.nextInt(5) + 1) * Gdx.graphics.getDensity()),
-                    (int) ((rng.nextInt(5) + 1) * Gdx.graphics.getDensity())));
+                    (int) ((rng.nextInt(5)) * Gdx.graphics.getDensity()) + 1,
+                    (int) ((rng.nextInt(5) + 1) * Gdx.graphics.getDensity()) + 1));
     }
 
     private Color changeTitleColor() {
