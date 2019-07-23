@@ -205,8 +205,10 @@ public class GameScreen implements Screen {
                     hud.setCoinLabel(player.getCoinsCollected());//Update hud
                     enemyArray.get(0).dispose();
                     enemyArray.remove(0);//Remove the first enemy in the array list
+                    store.getPurchaseSound().play();//Play purchase sound
+                } else {
+                    store.getInvalidSound().play();//Play invalid selection sound
                 }
-
                 super.touchUp(event, x, y, pointer, button);
             }
         });
@@ -222,6 +224,9 @@ public class GameScreen implements Screen {
                     player.setCoinsCollected(player.getCoinsCollected() - 50);
                     hud.setCoinLabel(player.getCoinsCollected());
                     player.setSpeed(player.getSpeed() * 1.25f);
+                    store.getPurchaseSound().play();//Play purchase sound
+                } else {
+                    store.getInvalidSound().play();//Play invalid selection sound
                 }
 
                 super.touchUp(event, x, y, pointer, button);
@@ -239,6 +244,9 @@ public class GameScreen implements Screen {
                     player.setHasShield(true);
                     player.setCoinsCollected(player.getCoinsCollected() - 60);
                     hud.setCoinLabel(player.getCoinsCollected());
+                    store.getPurchaseSound().play();//Play purchase sound
+                } else {
+                    store.getInvalidSound().play();//Play invalid selection sound
                 }
 
                 super.touchUp(event, x, y, pointer, button);
@@ -255,6 +263,9 @@ public class GameScreen implements Screen {
                     enemyRespawnTime *= 1.5;//Increase enemy respawn time by 50%
                     player.setCoinsCollected(player.getCoinsCollected() - 100);
                     hud.setCoinLabel(player.getCoinsCollected());
+                    store.getPurchaseSound().play();//Play purchase sound
+                } else {
+                    store.getInvalidSound().play();//Play invalid selection sound
                 }
 
                 super.touchUp(event, x, y, pointer, button);

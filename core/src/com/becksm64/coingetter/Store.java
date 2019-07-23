@@ -1,6 +1,7 @@
 package com.becksm64.coingetter;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -30,10 +31,14 @@ public class Store {
     private ImageButton slowerRespawnBtn;
     private BitmapFont font;
     private Random rng;
+    private Sound purchaseSound;
+    private Sound invalidSound;
 
     public Store(SpriteBatch batch) {
 
         rng =  new Random();//Create random number generator
+        purchaseSound = Gdx.audio.newSound(Gdx.files.internal("audio/cash_register.mp3"));
+        invalidSound = Gdx.audio.newSound(Gdx.files.internal("audio/invalid_selection.mp3"));
 
         //Generate font
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/cour.TTF"));
@@ -134,6 +139,14 @@ public class Store {
 
     public ImageButton getSlowerRespawnBtn() {
         return slowerRespawnBtn;
+    }
+
+    public Sound getPurchaseSound() {
+        return purchaseSound;
+    }
+
+    public Sound getInvalidSound() {
+        return invalidSound;
     }
 
     private void changeTitleColor() {
