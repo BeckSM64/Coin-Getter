@@ -117,7 +117,6 @@ public class Store {
         container.add(scrollPane).pad(padding);//Add scrollpane to table
 
         stage.addActor(container);//Add table which contains scrollpane to stage
-        Gdx.input.setInputProcessor(this.getStage());//Set ability to take input in store
     }
 
     public Stage getStage() {

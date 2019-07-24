@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -34,6 +35,8 @@ public class GameScreen implements Screen {
     private Store store;
     private PauseMenu pauseMenu;
     private HealthBonus healthBonus;
+    private InputMultiplexer multiplexer;
+    private InputProcessor storeProcessor;
 
     private float timeSeconds;
     private float enemyRespawnTime;
@@ -63,11 +66,11 @@ public class GameScreen implements Screen {
         healthBonusSpawnTime = rng.nextInt(60);//Spawn time for health bonus randomly generated between 0 and 1 minute
 
         //Setup input for multiple stages
-        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer = new InputMultiplexer();//Holds all input processors
         Gdx.input.setInputProcessor(multiplexer);
         multiplexer.addProcessor(hud.getStage());
-        multiplexer.addProcessor(store.getStage());
         multiplexer.addProcessor(pauseMenu.getStage());
+        storeProcessor = store.getStage();//Store input processor
 
         //Generate initial coins and enemy
         generateCoins();
@@ -279,7 +282,13 @@ public class GameScreen implements Screen {
 
                 //Only show the store if the pause menu isn't open
                 if(!isPaused)
-                showStore = !showStore;
+                    showStore = !showStore;
+
+                //Take input on store, only when it is visible
+                if(showStore)
+                    multiplexer.addProcessor(storeProcessor);
+                else
+                    multiplexer.removeProcessor(storeProcessor);
             }
         });
 
