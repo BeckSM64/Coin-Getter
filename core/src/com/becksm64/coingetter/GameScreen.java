@@ -262,7 +262,7 @@ public class GameScreen implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 
-                if(player.getCoinsCollected() >= 10 && enemyRespawnTime < 40) {
+                if(player.getCoinsCollected() >= 100 && enemyRespawnTime < 40) {
                     enemyRespawnTime *= 1.5;//Increase enemy respawn time by 50%
                     player.setCoinsCollected(player.getCoinsCollected() - 100);
                     hud.setCoinLabel(player.getCoinsCollected());
@@ -498,5 +498,6 @@ public class GameScreen implements Screen {
             healthBonus.dispose();
         hud.dispose();
         store.dispose();
+        pauseMenu.dispose();
     }
 }
