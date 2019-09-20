@@ -120,7 +120,6 @@ public class Store {
     }
 
     public Stage getStage() {
-        //changeTitleColor();
         return stage;
     }
 

@@ -114,10 +114,6 @@ public class Player {
         this.health = health;
     }
 
-    public boolean hasFullHealth() {
-        return health == 100;
-    }
-
     public int getScore() {
         return score;
     }

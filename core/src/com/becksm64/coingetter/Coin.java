@@ -54,18 +54,6 @@ public class Coin {
         return position;
     }
 
-    public void setPosition(int x, int y) {
-        this.position = new Vector3(x, y, 0);
-    }
-
-    public Vector3 getVelocity() {
-        return velocity;
-    }
-
-    public void setVelocity(int velX, int velY) {
-        this.velocity = new Vector3(velX, velY, 0);
-    }
-
     public void dispose() {
         coinImage.dispose();
     }

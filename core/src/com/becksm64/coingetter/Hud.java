@@ -36,7 +36,6 @@ public class Hud {
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage(viewport, batch);
-        //Gdx.input.setInputProcessor(stage);//Take input for stage
         Table table = new Table();
         table.top();
         table.setFillParent(true);
