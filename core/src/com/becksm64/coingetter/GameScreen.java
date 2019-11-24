@@ -54,8 +54,8 @@ public class GameScreen implements Screen {
         touchPos = new Vector3(Gdx.graphics.getWidth() / 2.0f, Gdx.graphics.getHeight() / 2.0f, 0);//Start relatively in center of screen
         player = new Player(touchPos.x, touchPos.y);
         rng = new Random();
-        coinArray = new ArrayList<Coin>();
-        enemyArray = new ArrayList<Enemy>();
+        coinArray = new ArrayList<>();
+        enemyArray = new ArrayList<>();
         enemyArray.add(new Enemy(rng.nextInt(Gdx.graphics.getWidth() - (int) Enemy.SIZE),
                         rng.nextInt(Gdx.graphics.getHeight() - (int) Enemy.SIZE)));//Add initial enemy
         healthBonus = null;
