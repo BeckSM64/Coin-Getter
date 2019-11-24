@@ -4,10 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -29,7 +27,6 @@ public class Store {
     private ImageButton runningShoesBtn;
     private ImageButton shieldBtn;
     private ImageButton slowerRespawnBtn;
-    private BitmapFont font;
     private Random rng;
     private Sound purchaseSound;
     private Sound invalidSound;
@@ -40,12 +37,6 @@ public class Store {
         purchaseSound = Gdx.audio.newSound(Gdx.files.internal("audio/cash_register.mp3"));
         invalidSound = Gdx.audio.newSound(Gdx.files.internal("audio/invalid_selection.mp3"));
 
-        //Generate font
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/cour.TTF"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = (int) (70 * Gdx.graphics.getDensity());
-        font = generator.generateFont(parameter);
-        generator.dispose();
         int padding = (int) (12 * Gdx.graphics.getDensity());
 
         //Create viewport, stage, and table which will hold buttons
@@ -63,7 +54,7 @@ public class Store {
 
         //Create labels
         storeTitle = new Label("STORE", skin);
-        storeTitle.setStyle(new Label.LabelStyle(font, Color.WHITE));
+        storeTitle.setStyle(new Label.LabelStyle(CoinGetter.font4, Color.WHITE));
 
         //Create buttons
         Texture enemyTexture = new Texture(Gdx.files.internal("sprites/rmvEnemyBtn.png"));
@@ -148,11 +139,10 @@ public class Store {
     }
 
     private void changeTitleColor() {
-        storeTitle.setStyle(new Label.LabelStyle(font, new Color(rng.nextFloat(), rng.nextFloat(), rng.nextFloat(), 1)));
+        storeTitle.setStyle(new Label.LabelStyle(CoinGetter.font4, new Color(rng.nextFloat(), rng.nextFloat(), rng.nextFloat(), 1)));
     }
 
     public void dispose() {
         stage.dispose();
-        font.dispose();
     }
 }

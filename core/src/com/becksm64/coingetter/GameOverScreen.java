@@ -6,9 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -25,7 +23,6 @@ public class GameOverScreen implements Screen {
     private SpriteBatch batch;
     private Stage stage;
     private OrthographicCamera cam;
-    private BitmapFont font, font2;
     private Skin skin;
     private Label gameOver;
     private TextButton newBtn, menuBtn;
@@ -45,23 +42,14 @@ public class GameOverScreen implements Screen {
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);//Set ability to take input on stage
 
-        //Setup fonts for menu text and buttons
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/cour.TTF"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = (int) (50 * Gdx.graphics.getDensity());
-        font = generator.generateFont(parameter);
-        parameter.size = (int) (30 * Gdx.graphics.getDensity());
-        font2 = generator.generateFont(parameter);
-        generator.dispose();//Get rid of generator after done making fonts
-
         //Setup menu text and buttons
         skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
         gameOver = new Label("[GAME OVER]", skin);
-        gameOver.setStyle(new Label.LabelStyle(font, Color.WHITE));
+        gameOver.setStyle(new Label.LabelStyle(CoinGetter.font, Color.WHITE));
         Label finalScore = new Label("SCORE: " + String.valueOf(score), skin);
-        finalScore.setStyle(new Label.LabelStyle(font2, Color.WHITE));
+        finalScore.setStyle(new Label.LabelStyle(CoinGetter.font2, Color.WHITE));
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = font2;
+        buttonStyle.font = CoinGetter.font2;
         newBtn = new TextButton("NEW GAME", buttonStyle);
         menuBtn = new TextButton("MAIN MENU", buttonStyle);
 
@@ -110,7 +98,7 @@ public class GameOverScreen implements Screen {
 
         cam.update();
         stage.draw();
-        gameOver.setStyle(new Label.LabelStyle(font, changeTitleColor()));//Change color of menu title every frame
+        gameOver.setStyle(new Label.LabelStyle(CoinGetter.font, changeTitleColor()));//Change color of menu title every frame
     }
 
     @Override
@@ -138,8 +126,6 @@ public class GameOverScreen implements Screen {
 
         batch.dispose();
         stage.dispose();
-        font.dispose();
-        font2.dispose();
         skin.dispose();
     }
 }

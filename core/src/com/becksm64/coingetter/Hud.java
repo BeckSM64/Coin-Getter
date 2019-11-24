@@ -3,9 +3,7 @@ package com.becksm64.coingetter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -26,12 +24,6 @@ public class Hud {
 
     public Hud(SpriteBatch batch) {
 
-        //Generate font
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/cour.TTF"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = (int) (35 * Gdx.graphics.getDensity());
-        BitmapFont font = generator.generateFont(parameter);
-        generator.dispose();
         int padding = (int) (12 * Gdx.graphics.getDensity());
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -43,22 +35,22 @@ public class Hud {
         Skin skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
 
         Label healthLabel = new Label("HEALTH:", skin);
-        healthLabel.setStyle(new Label.LabelStyle(font, Color.WHITE));
+        healthLabel.setStyle(new Label.LabelStyle(CoinGetter.font3, Color.WHITE));
 
         Label scoreLabel = new Label("SCORE:", skin);
-        scoreLabel.setStyle(new Label.LabelStyle(font, Color.WHITE));
+        scoreLabel.setStyle(new Label.LabelStyle(CoinGetter.font3, Color.WHITE));
 
         health = new Label("100", skin);
-        health.setStyle(new Label.LabelStyle(font, Color.WHITE));
+        health.setStyle(new Label.LabelStyle(CoinGetter.font3, Color.WHITE));
 
         coinLabel = new Label(": 0", skin);
-        coinLabel.setStyle(new Label.LabelStyle(font, Color.WHITE));
+        coinLabel.setStyle(new Label.LabelStyle(CoinGetter.font3, Color.WHITE));
 
         score = new Label("0", skin);
-        score.setStyle(new Label.LabelStyle(font, Color.WHITE));
+        score.setStyle(new Label.LabelStyle(CoinGetter.font3, Color.WHITE));
 
         TextButton.TextButtonStyle btnStyle= new TextButton.TextButtonStyle();
-        btnStyle.font = font;
+        btnStyle.font = CoinGetter.font3;
         storeBtn = new TextButton("STORE", btnStyle);
         pauseBtn = new TextButton("PAUSE", btnStyle);
 

@@ -6,9 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -29,7 +27,6 @@ public class MainMenuScreen implements Screen {
     private Stage stage;
     private Table table;
     private Skin skin;
-    private BitmapFont font, font2;
     private Label gameTitle;
     private TextButton startBtn;
     private TextButton highScoreBtn;
@@ -50,21 +47,12 @@ public class MainMenuScreen implements Screen {
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);//Set ability to take input on stage
 
-        //Setup fonts for menu text and buttons
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/cour.TTF"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = (int) (50 * Gdx.graphics.getDensity());
-        font = generator.generateFont(parameter);
-        parameter.size = (int) (30 * Gdx.graphics.getDensity());
-        font2 = generator.generateFont(parameter);
-        generator.dispose();//Get rid of generator after done making fonts
-
         //Setup menu text and buttons
         skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
         gameTitle = new Label("[COIN GETTER]", skin);
-        gameTitle.setStyle(new Label.LabelStyle(font, Color.WHITE));
+        gameTitle.setStyle(new Label.LabelStyle(CoinGetter.font, Color.WHITE));
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = font2;
+        buttonStyle.font = CoinGetter.font2;
         startBtn = new TextButton("START", buttonStyle);
         highScoreBtn = new TextButton("HIGH SCORES", buttonStyle);
 
@@ -78,7 +66,7 @@ public class MainMenuScreen implements Screen {
         rng = new Random();
 
         //Create random number of coins in an array with random positions and velocities. May have to use iterator
-        coinArray = new ArrayList<Coin>();
+        coinArray = new ArrayList<>();
         for(int i = 0; i < rng.nextInt(20); i++)
             coinArray.add(new Coin(rng.nextInt(Gdx.graphics.getWidth() - (int) Coin.WIDTH),
                     rng.nextInt(Gdx.graphics.getHeight() - (int ) Coin.HEIGHT),
@@ -121,7 +109,7 @@ public class MainMenuScreen implements Screen {
 
         cam.update();
         stage.draw();
-        gameTitle.setStyle(new Label.LabelStyle(font, changeTitleColor()));//Change color of menu title every frame
+        gameTitle.setStyle(new Label.LabelStyle(CoinGetter.font, changeTitleColor()));//Change color of menu title every frame
 
         //Update all the coins in the coin array
         for(Coin coin : coinArray)
@@ -156,9 +144,6 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-
-        font.dispose();
-        font2.dispose();
         skin.dispose();
         stage.dispose();
         batch.dispose();

@@ -6,8 +6,6 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -21,7 +19,6 @@ import java.util.Random;
 public class HighScoreScreen implements Screen {
 
     private Game game;
-    private BitmapFont font, font2;
     private Skin skin;
     private Label highScoreTitle;
     private Label score;
@@ -44,28 +41,20 @@ public class HighScoreScreen implements Screen {
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);//Take input on stage so buttons work
 
-        //Setup fonts for menu text and buttons
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/cour.TTF"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = (int) (50 * Gdx.graphics.getDensity());
-        font = generator.generateFont(parameter);
-        parameter.size = (int) (30 * Gdx.graphics.getDensity());
-        font2 = generator.generateFont(parameter);
-        generator.dispose();//Get rid of generator after done making fonts
         int padding = (int) (12 * Gdx.graphics.getDensity());
 
         //Setup menu text and buttons
         skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
         highScoreTitle = new Label("[HIGH SCORES]", skin);
-        highScoreTitle.setStyle(new Label.LabelStyle(font, Color.WHITE));
+        highScoreTitle.setStyle(new Label.LabelStyle(CoinGetter.font, Color.WHITE));
         score = new Label("1. ", skin);
         score2 = new Label("2. ", skin);
         score3 = new Label("3. ", skin);
-        score.setStyle(new Label.LabelStyle(font2, Color.WHITE));
-        score2.setStyle(new Label.LabelStyle(font2, Color.WHITE));
-        score3.setStyle(new Label.LabelStyle(font2, Color.WHITE));
+        score.setStyle(new Label.LabelStyle(CoinGetter.font2, Color.WHITE));
+        score2.setStyle(new Label.LabelStyle(CoinGetter.font2, Color.WHITE));
+        score3.setStyle(new Label.LabelStyle(CoinGetter.font2, Color.WHITE));
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = font2;
+        buttonStyle.font = CoinGetter.font2;
         backBtn = new TextButton("BACK", buttonStyle);
 
         Preferences prefs = Gdx.app.getPreferences("Coin Getter Preferences");//Get scores from preferences
@@ -110,7 +99,7 @@ public class HighScoreScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.draw();
-        highScoreTitle.setStyle(new Label.LabelStyle(font, changeTitleColor()));//Change color of high score title every frame
+        highScoreTitle.setStyle(new Label.LabelStyle(CoinGetter.font, changeTitleColor()));//Change color of high score title every frame
     }
 
     @Override
@@ -136,8 +125,6 @@ public class HighScoreScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        font.dispose();
-        font2.dispose();
         skin.dispose();
     }
 }
