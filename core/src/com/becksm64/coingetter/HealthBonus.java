@@ -18,6 +18,7 @@ public class HealthBonus {
     public HealthBonus(int x, int y, int velX, int velY) {
 
         healthBonusImage = new Texture("sprites/healthBonus.png");
+        healthBonusImage.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         position = new Vector3(x, y, 0);
         velocity = new Vector3(velX, velY, 0);
         bounds = new Rectangle(x, y, WIDTH, HEIGHT);

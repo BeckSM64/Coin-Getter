@@ -49,5 +49,7 @@ public class CoinGetter extends Game {
 		batch.dispose();
 		font.dispose();
 		font2.dispose();
+		font3.dispose();
+		font4.dispose();
 	}
 }

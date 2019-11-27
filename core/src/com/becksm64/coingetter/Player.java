@@ -27,6 +27,7 @@ public class Player {
     public Player(float x, float y) {
 
         playerImage = new Texture("sprites/player.png");
+        playerImage.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         position = new Vector3(x, y, 0);
         bounds = new Rectangle(x, y, SIZE, SIZE);
         coinsCollected = 0;//Starts at 0 because player starts with no coins

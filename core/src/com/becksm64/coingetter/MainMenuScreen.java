@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ public class MainMenuScreen implements Screen {
     private Game game;
     private SpriteBatch batch;
     private OrthographicCamera cam;
+    private Viewport viewport;
     private Stage stage;
     private Table table;
     private Skin skin;
@@ -38,10 +41,11 @@ public class MainMenuScreen implements Screen {
         this.game = game;
         batch = new SpriteBatch();
         cam = new OrthographicCamera();
-        cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        viewport = new ScreenViewport(cam);
 
         //Setup stage and table for menu
-        stage = new Stage();
+        System.out.println(viewport.getWorldWidth());
+        stage = new Stage(viewport);
         table = new Table();
         table.setFillParent(true);//Make table fill stage
         stage.addActor(table);
@@ -68,8 +72,8 @@ public class MainMenuScreen implements Screen {
         //Create random number of coins in an array with random positions and velocities. May have to use iterator
         coinArray = new ArrayList<>();
         for(int i = 0; i < rng.nextInt(20); i++)
-            coinArray.add(new Coin(rng.nextInt(Gdx.graphics.getWidth() - (int) Coin.WIDTH),
-                    rng.nextInt(Gdx.graphics.getHeight() - (int ) Coin.HEIGHT),
+            coinArray.add(new Coin(rng.nextInt((int) viewport.getWorldWidth() - (int) Coin.WIDTH),
+                    rng.nextInt((int) viewport.getWorldHeight() - (int ) Coin.HEIGHT),
                     (int) ((rng.nextInt(5)) * Gdx.graphics.getDensity()) + 1,
                     (int) ((rng.nextInt(5) + 1) * Gdx.graphics.getDensity()) + 1));
     }
@@ -104,7 +108,6 @@ public class MainMenuScreen implements Screen {
 
         //Clear screen with specified color
         Gdx.gl.glClearColor(0.008f, 0.15f, 0.38f, 1);
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         cam.update();
@@ -124,7 +127,9 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        viewport.update(width, height);
+        stage.getViewport().update(width, height, true);
+        batch.setProjectionMatrix(viewport.getCamera().combined);
     }
 
     @Override

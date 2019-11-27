@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Coin {
 
-    public static final float WIDTH = Gdx.graphics.getWidth() / 10.0f;
-    public static final float HEIGHT = Gdx.graphics.getHeight() / 6.0f;
+    public static float WIDTH = Gdx.graphics.getWidth() / 10.0f;
+    public static float HEIGHT = Gdx.graphics.getHeight() / 6.0f;
 
     private Texture coinImage;
     private Vector3 position;
@@ -18,6 +18,7 @@ public class Coin {
     public Coin(int x, int y, int velX, int velY) {
 
         coinImage = new Texture("sprites/coin.png");
+        coinImage.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         position = new Vector3(x, y, 0);
         velocity = new Vector3(velX, velY, 0);
         bounds = new Rectangle(x, y, WIDTH, HEIGHT);

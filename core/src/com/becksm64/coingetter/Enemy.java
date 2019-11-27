@@ -18,6 +18,7 @@ public class Enemy {
     public Enemy(int x, int y) {
 
         enemyImage = new Texture("sprites/enemy.png");
+        enemyImage.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         position = new Vector3(x, y, 0);
         bounds = new Rectangle(x, y, SIZE, SIZE);
         velocity = new Vector3(5 * Gdx.graphics.getDensity(), 5 * Gdx.graphics.getDensity(), 0);

@@ -46,6 +46,7 @@ public class Store {
 
         //Set background for table
         Texture bgTexture = new Texture(Gdx.files.internal("sprites/bgColor.png"));//Test image, replace with actual store button image when finished
+        bgTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         TextureRegion bgRegion = new TextureRegion(bgTexture);
         Drawable bgDrawable = new TextureRegionDrawable(bgRegion);
         table.setBackground(bgDrawable);
@@ -58,6 +59,7 @@ public class Store {
 
         //Create buttons
         Texture enemyTexture = new Texture(Gdx.files.internal("sprites/rmvEnemyBtn.png"));
+        enemyTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         TextureRegion enemyRegion = new TextureRegion(enemyTexture);
         Drawable enemyDrawable = new TextureRegionDrawable(enemyRegion);
         Texture enemyTextureClicked = new Texture(Gdx.files.internal("sprites/rmvEnemyClicked.png"));
@@ -66,6 +68,7 @@ public class Store {
         removeEnemyBtn = new ImageButton(enemyDrawable, enemyDrawableClicked);
 
         Texture shoesTexture = new Texture(Gdx.files.internal("sprites/runningShoesBtn.png"));
+        shoesTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         TextureRegion shoesRegion = new TextureRegion(shoesTexture);
         Drawable shoesDrawable = new TextureRegionDrawable(shoesRegion);
         Texture shoesClickedTexture = new Texture(Gdx.files.internal("sprites/runningShoesClicked.png"));
@@ -74,6 +77,7 @@ public class Store {
         runningShoesBtn = new ImageButton(shoesDrawable, shoesClickedDrawable);
 
         Texture shieldTexture = new Texture(Gdx.files.internal("sprites/shieldBtn.png"));
+        shieldTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         TextureRegion shieldRegion = new TextureRegion(shieldTexture);
         Drawable shieldDrawable = new TextureRegionDrawable(shieldRegion);
         Texture shieldTextureClicked = new Texture(Gdx.files.internal("sprites/shieldClicked.png"));
@@ -82,6 +86,7 @@ public class Store {
         shieldBtn = new ImageButton(shieldDrawable, shieldDrawableClicked);
 
         Texture slowerRespawnTexture = new Texture(Gdx.files.internal("sprites/slowerRespawnBtn.png"));
+        slowerRespawnTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         TextureRegion slowerRespawnRegion = new TextureRegion(slowerRespawnTexture);
         Drawable slowerRespawnDrawable = new TextureRegionDrawable(slowerRespawnRegion);
         Texture slowerRespawnTextureClicked = new Texture(Gdx.files.internal("sprites/slowerRespawnClicked.png"));
